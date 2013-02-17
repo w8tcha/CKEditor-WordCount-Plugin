@@ -7,7 +7,8 @@
     <meta name="description" content="Ckeditor-wordcount-plugin : WordCount Plugin for CKEditor" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
+	<script src="ckeditor/samples/sample.js" type="text/javascript"></script>
     <title>Ckeditor-wordcount-plugin</title>
   </head>
 
@@ -16,14 +17,13 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/w8tcha/CKEditor-WordCount-Plugin">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/w8tcha/CKEditor-wordcount-Plugin">View on GitHub</a>
 
-          <h1 id="project_title">Ckeditor-wordcount-plugin</h1>
-          <h2 id="project_tagline">WordCount Plugin for CKEditor</h2>
+          <h1 id="project_title">CKEditor&trade; WordCount Plugin</h1>
+          <h2 id="project_tagline">Word Count Plugin for <a href="http://ckeditor.com/">CKEditor&trade;</a></h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/w8tcha/CKEditor-WordCount-Plugin/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/w8tcha/CKEditor-WordCount-Plugin/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/w8tcha/CKEditor-WordCount-Plugin/archive/master.zip">Download this project as a .zip file</a>
             </section>
         </header>
     </div>
@@ -31,32 +31,62 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>CKEditor-WordCount-Plugin</h1>
+        <h1><a href="http://ckeditor.com/">CKEditor&trade;</a> WordCount Plugin</h1>
 
 <p>WordCount Plugin for CKEditor that counts the words an shows the word count in the footer of the editor.</p>
+<p><strong>DISCLAIMER:</strong> This is a forked Version, i can not find the original Author anymore if anyone knows the original Author please contact me and i can include the Author in the Copyright Notices.</p>
+<hr />
+<h4>Demo
+ 
+	<!-- This <div> holds alert messages to be display in the sample page. -->	</h4>
+<div id="alerts">
+		<noscript>
+			<p>
+				<strong>CKEditor requires JavaScript to run</strong>. In a browser with no JavaScript
+				support, like yours, you should still see the contents (HTML data) and you should
+				be able to edit it normally, without a rich editor interface.
+			</p>
+		</noscript>
+	</div>
+			<textarea cols="80" id="editor1" name="editor1" rows="10">This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.</textarea>
+			<script type="text/javascript">
+			//<![CDATA[
 
-<p>(<a href="http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorWordCountPlugin.png">http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorWordCountPlugin.png</a>)</p>
+			// Replace the <textarea id="editor"> with an CKEditor
+			// instance, using the "WordCount" plugin.
+			CKEDITOR.replace( 'editor1',
+				{
+					extraPlugins : 'wordcount',
+			} );
 
-<p>DISCLAIMER: This is a forked Version, i can not find the original Author anymore if anyone knows the original Author please contact me and i can include the Author in the Copyright Notices. </p>
+			//]]>
+			</script>
+		</p>
+<hr />
 
 <h4>License</h4>
 
-<p>Licensed under the terms of the MIT License.</p>
+<ul>
+    <li>Licensed under the terms of the MIT License.</li>
+</ul>
+
+<hr />
 
 <h4>Installation</h4>
 
 <ol>
 <li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
-<li>In the CKEditor configuration file (config.js) add the following code:</li>
-</ol><pre><code>config.extraPlugins = '[ wordcount ]';
+<li>In the CKEditor configuration file (config.js) add the following code:
+<pre><code>config.extraPlugins = '[ wordcount ]';
 </code></pre>
+</ol>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Ckeditor-wordcount-plugin maintained by <a href="https://github.com/w8tcha">w8tcha</a></p>
+        <p class="copyright">Ckeditor-WordCount-plugin maintained by <a href="https://github.com/w8tcha">w8tcha</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
