@@ -4,5 +4,5 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'wordcount', 'de', {
 	WordCount: 'Wortanzahl:',
-	CharCount: 'Charcount:'
+	CharCount: 'Zeichenanzahl:'
 });
