@@ -7,11 +7,12 @@ CKEDITOR.plugins.add('wordcount', {
     lang: ['de', 'en'],
     init: function (editor) {
         var defaultLimit = 'unlimited';
-        var defaultFormat = '<span class="cke_path_item">' + editor.lang.wordcount.WordCount + ' %count%</span>';
+        var defaultFormat = '<span class="cke_path_item">'+editor.lang.wordcount.CharCount+'%charCount%&nbsp;,&nbsp;' + editor.lang.wordcount.WordCount + ' %wordCount%</span>';
         var limit = defaultLimit;
         var format = defaultFormat;
         var intervalId;
-        var lastCount = 0;
+        var lastWordCount = 0;
+        var lastCharCount = 0;
         var limitReachedNotified = false;
         var limitRestoredNotified = false;
         
@@ -32,20 +33,23 @@ CKEDITOR.plugins.add('wordcount', {
         }
 
         function updateCounter(editor) {
-            var count = 0;
+            var wordCount = 0;
+            var charCount = 0;
             if (editor.getData()) {
-                count = strip(editor.getData()).trim().split(/\s+/).length;
+                wordCount = strip(editor.getData()).trim().split(/\s+/).length;
+                charCount = strip(editor.getData()).trim().length;
             }
-            var html = format.replace('%count%', count);
+            var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
             counterElement(editor).innerHTML = html
-            if (count == lastCount) {
+            if (charCount == lastCharCount) {
                 return true
             } else {
-                lastCount = count
+                lastWordCount = wordCount
+                lastCharCount = charCount
             }
-            if (count > limit) {
+            if (wordCount > limit) {
                 limitReached(editor, limitReachedNotified)
-            } else if (!limitRestoredNotified && count < limit) {
+            } else if (!limitRestoredNotified && wordCount < limit) {
                 limitRestored(editor)
             }
         }
