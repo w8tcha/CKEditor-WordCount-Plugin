@@ -7,7 +7,7 @@ CKEDITOR.plugins.add('wordcount', {
     lang: ['de', 'en'],
     init: function (editor) {
         var defaultLimit = 'unlimited';
-        var defaultFormat = '<span class="cke_path_item">'+editor.lang.wordcount.CharCount+'%charCount%&nbsp;' + editor.lang.wordcount.WordCount + ' %wordCount%</span>';
+        var defaultFormat = '<span class="cke_path_item">'+editor.lang.wordcount.CharCount+'%charCount%&nbsp;,&nbsp;' + editor.lang.wordcount.WordCount + ' %wordCount%</span>';
         var limit = defaultLimit;
         var format = defaultFormat;
         var intervalId;
