@@ -54,10 +54,13 @@
 
 			// Replace the <textarea id="editor"> with an CKEditor
 			// instance, using the "WordCount" plugin.
-			CKEDITOR.replace( 'editor1',
-				{
-					extraPlugins : 'wordcount',
-			} );
+			CKEDITOR.replace( 'editor1',{
+				extraPlugins : 'wordcount',
+				wordcount : {
+					showCharCount : true,
+					showWordCount : true
+				}
+				} );
 
 			//]]>
 			</script>
