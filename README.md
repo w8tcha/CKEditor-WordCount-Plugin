@@ -27,7 +27,7 @@ config.extraPlugins = '[ wordcount ]';
 
 
 ````
-config.codemirror = {
+config.wordcount = {
 
     // Whether or not you want to show the Word Count
     showWordCount: true
