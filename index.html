@@ -78,7 +78,18 @@
 <li>Extract the contents of the file into the "plugins" folder of CKEditor.</li>
 <li>In the CKEditor configuration file (config.js) add the following code:
 <pre><code>config.extraPlugins = '[ wordcount ]';
-</code></pre>
+</code></pre></li>
+<li>
+<pre><code>config.codemirror = {
+
+    // Whether or not you want to show the Word Count
+    showWordCount: true
+
+    // Whether or not you want to show the Char Count
+    showCharCount: false,
+};</code></pre>
+</li>
+
 </ol>
       </section>
     </div>
