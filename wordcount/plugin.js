@@ -6,52 +6,88 @@
 CKEDITOR.plugins.add('wordcount', {
     lang: ['de', 'en'],
     init: function (editor) {
+        
         var defaultLimit = 'unlimited';
-        var defaultFormat = '<span class="cke_path_item">'+editor.lang.wordcount.CharCount+'%charCount%&nbsp;,&nbsp;' + editor.lang.wordcount.WordCount + ' %wordCount%</span>';
+        var defaultFormat = '<span class="cke_path_item">';
         var limit = defaultLimit;
-        var format = defaultFormat;
+        
         var intervalId;
         var lastWordCount = 0;
         var lastCharCount = 0;
         var limitReachedNotified = false;
         var limitRestoredNotified = false;
         
-		CKEDITOR.document.appendStyleSheet(this.path + 'css/wordcount.css');
+        // Default Config
+        var defaultConfig = {
+            showWordCount: true,
+            showCharCount: false
+        };
+        
+        // Get Config & Lang
+        var config = CKEDITOR.tools.extend(defaultConfig, editor.config.wordcount || {}, true);
+        
+        if (config.showCharCount) {
+            defaultFormat += editor.lang.wordcount.CharCount + '&nbsp;%charCount%';
+        }
+
+        if (config.showCharCount && config.showWordCount) {
+            defaultFormat += ',&nbsp;';
+        }
+
+        if (config.showWordCount) {
+            defaultFormat += editor.lang.wordcount.WordCount + ' %wordCount%';
+        }
+        
+        defaultFormat += '</span>';
+        
+        var format = defaultFormat;
+
+        CKEDITOR.document.appendStyleSheet(this.path + 'css/wordcount.css');
 
         function counterId(editor) {
-            return 'cke_wordcount_' + editor.name
+            return 'cke_wordcount_' + editor.name;
         }
 
         function counterElement(editor) {
-            return document.getElementById(counterId(editor))
+            return document.getElementById(counterId(editor));
         }
 
         function strip(html) {
             var tmp = document.createElement("div");
             tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText
+            return tmp.textContent || tmp.innerText;
         }
 
         function updateCounter(editor) {
             var wordCount = 0;
             var charCount = 0;
+
             if (editor.getData()) {
-                wordCount = strip(editor.getData()).trim().split(/\s+/).length;
-                charCount = strip(editor.getData()).trim().length;
+
+                if (config.showWordCount) {
+                    wordCount = strip(editor.getData()).trim().split(/\s+/).length;
+                }
+
+                if (config.showCharCount) {
+                    charCount = strip(editor.getData()).trim().length;
+                }
             }
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
-            counterElement(editor).innerHTML = html
+
+            counterElement(editor).innerHTML = html;
+
             if (charCount == lastCharCount) {
-                return true
+                return true;
             } else {
-                lastWordCount = wordCount
-                lastCharCount = charCount
+                lastWordCount = wordCount;
+                lastCharCount = charCount;
             }
             if (wordCount > limit) {
-                limitReached(editor, limitReachedNotified)
+                limitReached(editor, limitReachedNotified);
             } else if (!limitRestoredNotified && wordCount < limit) {
-                limitRestored(editor)
+                limitRestored(editor);
             }
+            return true;
         }
 
         function limitReached(editor, notify) {
@@ -71,38 +107,39 @@ CKEDITOR.plugins.add('wordcount', {
             limitReachedNotified = false;
             editor.config.Locked = 0;
         }
-        editor.on('uiSpace', function (event) {
+
+        editor.on('uiSpace', function(event) {
             if (event.data.space == 'bottom') {
-                event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + CKEDITOR.tools.htmlEncode('Words Counter') + '"' + '>&nbsp;</div>'
+                event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + CKEDITOR.tools.htmlEncode('Words Counter') + '"' + '>&nbsp;</div>';
             }
         }, editor, null, 100);
-        editor.on('instanceReady', function (event) {
+        editor.on('instanceReady', function() {
             if (editor.config.wordcount_limit != undefined) {
-                limit = editor.config.wordcount_limit
+                limit = editor.config.wordcount_limit;
             }
             if (editor.config.wordcount_format != undefined) {
-                format = editor.config.wordcount_format
+                format = editor.config.wordcount_format;
             }
         }, editor, null, 100);
-        editor.on('dataReady', function (event) {
+        editor.on('dataReady', function(event) {
             var count = event.editor.getData().length;
             if (count > limit) {
-                limitReached(editor)
+                limitReached(editor);
             }
-            updateCounter(event.editor)
+            updateCounter(event.editor);
         }, editor, null, 100);
         editor.on('change', function (event) {
-            updateCounter(event.editor)
+            updateCounter(event.editor);
         }, editor, null, 100);
-        editor.on('focus', function (event) {
+        editor.on('focus', function(event) {
             editorHasFocus = true;
-            intervalId = window.setInterval(function (editor) {
-                updateCounter(editor)
-            }, 1000, event.editor)
+            intervalId = window.setInterval(function(editor) {
+                updateCounter(editor);
+            }, 100, event.editor);
         }, editor, null, 100);
-        editor.on('blur', function (event) {
+        editor.on('blur', function() {
             editorHasFocus = false;
-            if (intervalId) clearInterval(intervalId)
-        }, editor, null, 100)
+            if (intervalId) clearInterval(intervalId);
+        }, editor, null, 100);
     }
 });

@@ -1,7 +1,7 @@
 CKEditor-WordCount-Plugin
 =========================
 
-WordCount Plugin for CKEditor that counts the words an shows the word count in the footer of the editor.
+WordCount Plugin for CKEditor that counts the words/characters an shows the word count and/or char count in the footer of the editor.
 
 (http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorWordCountPlugin.png)
 
@@ -19,3 +19,16 @@ Licensed under the terms of the MIT License.
 ````
 config.extraPlugins = '[ wordcount ]';
 ````
+
+
+````
+config.codemirror = {
+
+    // Whether or not you want to show the Word Count
+    showWordCount: true
+
+    // Whether or not you want to show the Char Count
+    showCharCount: false,
+};
+````
+
