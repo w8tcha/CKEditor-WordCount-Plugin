@@ -63,7 +63,7 @@ CKEDITOR.plugins.add('wordcount', {
             var charCount = 0;
 
             if (editor.getData()) {
-                text = editor.getData().replace(/(\r\n|\n|\r)/gm,"").replace(/(&nbsp;)/g, " ");
+                var text = editor.getData().replace(/(\r\n|\n|\r)/gm, "").replace(/(&nbsp;)/g, " ");
 				
                 if (config.showWordCount) {
 					wordCount = strip(text).trim().split(/\s+/).length;
@@ -88,6 +88,7 @@ CKEDITOR.plugins.add('wordcount', {
             } else if (!limitRestoredNotified && wordCount < limit) {
                 limitRestored(editor);
             }
+            
             return true;
         }
 
@@ -129,9 +130,15 @@ CKEDITOR.plugins.add('wordcount', {
             }
             updateCounter(event.editor);
         }, editor, null, 100);
-        editor.on('change', function (event) {
+		editor.on('key', function (event) {
+		    updateCounter(event.editor);
+		}, editor, null, 100);
+		editor.on('afterPaste', function (event) {
+		    updateCounter(event.editor);
+		}, editor, null, 100);
+       /* editor.on('change', function (event) {
             updateCounter(event.editor);
-        }, editor, null, 100);
+        }, editor, null, 100);*/
         editor.on('focus', function(event) {
             editorHasFocus = true;
             intervalId = window.setInterval(function(editor) {
