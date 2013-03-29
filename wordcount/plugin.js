@@ -63,13 +63,14 @@ CKEDITOR.plugins.add('wordcount', {
             var charCount = 0;
 
             if (editor.getData()) {
-
+                text = editor.getData().replace(/(\r\n|\n|\r)/gm,"").replace(/(&nbsp;)/g, " ");
+				
                 if (config.showWordCount) {
-                    wordCount = strip(editor.getData()).trim().split(/\s+/).length;
+					wordCount = strip(text).trim().split(/\s+/).length;
                 }
 
                 if (config.showCharCount) {
-                    charCount = strip(editor.getData()).trim().length;
+					charCount = strip(text).trim().length;
                 }
             }
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
