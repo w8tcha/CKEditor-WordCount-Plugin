@@ -55,6 +55,10 @@ CKEDITOR.plugins.add('wordcount', {
         function strip(html) {
             var tmp = document.createElement("div");
             tmp.innerHTML = html;
+
+            if (tmp.textContent == '' && typeof tmp.innerText == 'undefined') {
+               return '0';
+            }
             return tmp.textContent || tmp.innerText;
         }
 
