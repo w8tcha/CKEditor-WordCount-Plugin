@@ -4,7 +4,7 @@
  */
  
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['de', 'en'],
+    lang: ['de', 'en', 'pl'],
     init: function (editor) {
         
         var defaultLimit = 'unlimited';
