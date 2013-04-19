@@ -30,10 +30,10 @@ config.extraPlugins = 'wordcount';
 config.wordcount = {
 
     // Whether or not you want to show the Word Count
-    showWordCount: true
+    showWordCount: true,
 
     // Whether or not you want to show the Char Count
-    showCharCount: false,
+    showCharCount: false
 };
 ````
 
