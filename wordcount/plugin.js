@@ -83,9 +83,7 @@ CKEDITOR.plugins.add('wordcount', {
 					wordCount = strip(text).trim().split(/\s+/).length;
                 }
 
-                if (config.showCharCount) {
-					charCount = strip(text).trim().length;
-                }
+                charCount = strip(text).trim().length;
             }
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
             
@@ -110,6 +108,7 @@ CKEDITOR.plugins.add('wordcount', {
                 limitReached(editor, limitReachedNotified);
             } else if (!limitRestoredNotified && charCount < config.charLimit) {
                 limitRestored(editor);
+               
             }
             
             return true;
@@ -143,15 +142,7 @@ CKEDITOR.plugins.add('wordcount', {
                 event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
             }
         }, editor, null, 100);
-        editor.on('instanceReady', function (event) {
-            if (editor.config.wordcount_limit != undefined) {
-                limit = editor.config.wordcount_limit;
-            }
-            if (editor.config.wordcount_format != undefined) {
-                format = editor.config.wordcount_format;
-            }
-        }, editor, null, 100);
-        editor.on('dataReady', function(event) {
+       editor.on('dataReady', function(event) {
             var count = event.editor.getData().length;
             if (count > config.wordLimit) {
                 limitReached(editor);
