@@ -4,7 +4,7 @@
  */
  
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['de', 'en', 'fr', 'pl'],
+    lang: ['de', 'en', 'fr', 'pl', 'es'],
     init: function (editor) {
         
         var defaultFormat = '<span class="cke_path_item">';
