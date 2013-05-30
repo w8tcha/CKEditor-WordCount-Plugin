@@ -33,7 +33,13 @@ config.wordcount = {
     showWordCount: true,
 
     // Whether or not you want to show the Char Count
-    showCharCount: false
+    showCharCount: false,
+    
+    // Option to limit the characters in the Editor
+    charLimit: 'unlimited',
+
+    // Option to limit the words in the Editor
+    wordLimit: 'unlimited'
 };
 ````
 
