@@ -1,10 +1,10 @@
 /**
- * @license Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
- 
+
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['de', 'en', 'es', 'fr', 'pl'],
+    lang: ['ca', 'de', 'en', 'es', 'fr', 'pl'],
     init: function (editor) {
         
         var defaultFormat = '<span class="cke_path_item">';
