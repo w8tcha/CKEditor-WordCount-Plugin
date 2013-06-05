@@ -6,6 +6,9 @@
 CKEDITOR.plugins.add('wordcount', {
     lang: ['ca', 'de', 'en', 'es', 'fr', 'pl'],
     init: function (editor) {
+        if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
+            return;
+        }
         
         var defaultFormat = '<span class="cke_path_item">';
         
