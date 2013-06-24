@@ -31,7 +31,6 @@ CKEDITOR.plugins.add('wordcount', {
         if (config.showCharCount) {
             defaultFormat += editor.lang.wordcount.CharCount + '&nbsp;%charCount%';
 
-
             if (config.charLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.charLimit + ')';
             }
@@ -164,14 +163,13 @@ CKEDITOR.plugins.add('wordcount', {
         /* editor.on('change', function (event) {
              updateCounter(event.editor);
          }, editor, null, 100);*/
-        editor.on('focus', function (event) {
-            //editorHasFocus = true;
+        /*editor.on('focus', function (event) {
+            editorHasFocus = true;
             intervalId = window.setInterval(function () {
                 updateCounter(editor);
             }, 300, event.editor);
-        }, editor, null, 300);
+        }, editor, null, 300);*/
         editor.on('blur', function () {
-            //editorHasFocus = false;
             if (intervalId) {
                 window.clearInterval(intervalId);
             }
