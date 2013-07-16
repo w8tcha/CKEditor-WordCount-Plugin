@@ -22,14 +22,17 @@ CKEDITOR.plugins.add('wordcount', {
             showWordCount: true,
             showCharCount: false,
             charLimit: 'unlimited',
-            wordLimit: 'unlimited'
+            wordLimit: 'unlimited',
+            countHTML: false
         };
 
         // Get Config & Lang
         var config = CKEDITOR.tools.extend(defaultConfig, editor.config.wordcount || {}, true);
 
         if (config.showCharCount) {
-            defaultFormat += editor.lang.wordcount.CharCount + '&nbsp;%charCount%';
+            var charLabel = editor.lang.wordcount[config.countHTML ? 'CharCountWithHTML' : 'CharCount'];
+
+            defaultFormat += charLabel + '&nbsp;%charCount%';
 
             if (config.charLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.charLimit + ')';
@@ -75,20 +78,26 @@ CKEDITOR.plugins.add('wordcount', {
         function updateCounter(editorInstance) {
             var wordCount = 0,
                 charCount = 0,
+                normalizedText,
                 text;
 
-            if (editorInstance.getData()) {
-                text = editorInstance.getData().
-                    replace(/(\r\n|\n|\r)/gm, " ").
-                    replace(/^\s+|\s+$/g, '').
-                    replace("&nbsp;", " ");
+            if (text = editorInstance.getData()) {
+                if ((!config.countHTML && config.showCharCount) || config.showWordCount) {
+                    normalizedText = text.
+                        replace(/(\r\n|\n|\r)/gm, " ").
+                        replace(/^\s+|\s+$/g, '').
+                        replace("&nbsp;", " ");
 
-                if (config.showWordCount) {
-                    wordCount = strip(text).split(/\s+/).length;
+                    normalizedText = strip(normalizedText);
                 }
 
-                charCount = strip(text).length;
+                if (config.showCharCount) {
+                    charCount = config.countHTML ? text.length : normalizedText.length;
+                }
 
+                if (config.showWordCount) {
+                    wordCount = normalizedText.split(/\s+/).length;
+                }
             }
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
 
