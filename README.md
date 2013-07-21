@@ -38,6 +38,9 @@ config.wordcount = {
     // Option to limit the characters in the Editor
     charLimit: 'unlimited',
 
+    // Whether or not to include Html chars in the Char Count
+    countHTML: false,
+
     // Option to limit the words in the Editor
     wordLimit: 'unlimited'
 };
