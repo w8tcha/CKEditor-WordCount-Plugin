@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang('wordcount', 'pl', {
     WordCount: 'Słów:',
     CharCount: 'Znaków:',
+    CharCountWithHTML: 'Znaków (including HTML):',
     limit: 'Limit:',
     title: 'Statystyka'
 });
