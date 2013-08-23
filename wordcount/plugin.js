@@ -70,7 +70,7 @@ CKEDITOR.plugins.add('wordcount', {
             tmp.innerHTML = html;
 
             if (tmp.textContent == '' && typeof tmp.innerText == 'undefined') {
-                return '0';
+				return '0';
             }
             return tmp.textContent || tmp.innerText;
         }
@@ -87,7 +87,6 @@ CKEDITOR.plugins.add('wordcount', {
                         replace(/(\r\n|\n|\r)/gm, " ").
                         replace(/^\s+|\s+$/g, '').
                         replace("&nbsp;", " ");
-
                     normalizedText = strip(normalizedText);
                 }
 
@@ -133,6 +132,7 @@ CKEDITOR.plugins.add('wordcount', {
             limitRestoredNotified = false;
 
             editorInstance.execCommand('undo');
+
             if (!notify) {
                 counterElement(editorInstance).className += " cke_wordcountLimitReached";
 
@@ -163,15 +163,14 @@ CKEDITOR.plugins.add('wordcount', {
             }
             updateCounter(event.editor);
         }, editor, null, 100);
-        editor.on('key', function (event) {
+        editor.on('change', function (event) {
+			
             updateCounter(event.editor);
         }, editor, null, 100);
+
         editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-        /* editor.on('change', function (event) {
-             updateCounter(event.editor);
-         }, editor, null, 100);*/
         /*editor.on('focus', function (event) {
             editorHasFocus = true;
             intervalId = window.setInterval(function () {
