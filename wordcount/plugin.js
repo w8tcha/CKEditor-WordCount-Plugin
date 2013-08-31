@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['ca', 'de', 'en', 'es', 'fr', 'no', 'pl'],
+    lang: ['ca', 'de', 'en', 'es', 'fr', 'jp', 'no', 'pl'],
     init: function (editor) {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
             return;
@@ -50,7 +50,7 @@ CKEDITOR.plugins.add('wordcount', {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.wordLimit + ')';
             }
         }
-
+        
         defaultFormat += '</span>';
 
         var format = defaultFormat;
@@ -98,6 +98,7 @@ CKEDITOR.plugins.add('wordcount', {
                     wordCount = normalizedText.split(/\s+/).length;
                 }
             }
+            
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
 
             counterElement(editorInstance).innerHTML = html;
@@ -121,7 +122,6 @@ CKEDITOR.plugins.add('wordcount', {
                 limitReached(editor, limitReachedNotified);
             } else if (!limitRestoredNotified && charCount < config.charLimit) {
                 limitRestored(editor);
-
             }
 
             return true;
@@ -135,21 +135,26 @@ CKEDITOR.plugins.add('wordcount', {
 
             if (!notify) {
                 counterElement(editorInstance).className += " cke_wordcountLimitReached";
-
-                editorInstance.fire('limitReached', {}, editor);
+				
+				editorInstance.fire('limitReached', {}, editor);
             }
             // lock editor
             editorInstance.config.Locked = 1;
-            editorInstance.fire("change");
+            //editorInstance.fire("change");
         }
 
         function limitRestored(editorInstance) {
             limitRestoredNotified = true;
             limitReachedNotified = false;
             editorInstance.config.Locked = 0;
-
-            counterElement(editorInstance).className = "cke_wordcount";
+			
+			counterElement(editorInstance).className = "cke_wordcount";
         }
+        
+        editor.on('key', function (event) {
+
+            updateCounter(event.editor);
+        }, editor, null, 100);
 
         editor.on('uiSpace', function (event) {
             if (event.data.space == 'bottom') {
