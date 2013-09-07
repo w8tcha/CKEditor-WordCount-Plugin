@@ -82,23 +82,33 @@ CKEDITOR.plugins.add('wordcount', {
                 text;
 
             if (text = editorInstance.getData()) {
-                if ((!config.countHTML && config.showCharCount) || config.showWordCount) {
-                    normalizedText = text.
-                        replace(/(\r\n|\n|\r)/gm, " ").
-                        replace(/^\s+|\s+$/g, '').
-                        replace("&nbsp;", " ");
-                    normalizedText = strip(normalizedText);
-                }
-
                 if (config.showCharCount) {
-                    charCount = config.countHTML ? text.length : normalizedText.length;
+                    if (config.countHTML) {
+                        charCount = text.length;
+                    } else {
+                        normalizedText = text.
+                            replace(/(\r\n|\n|\r)/gm, "").
+                            replace(/^\s+|\s+$/g, "").
+                            replace("&nbsp;", "").
+                            replace(" ", "");
+                        normalizedText = strip(normalizedText);
+
+                        charCount = normalizedText.length;
+                    }
                 }
 
                 if (config.showWordCount) {
+                    normalizedText = text.
+                        replace(/(\r\n|\n|\r)/gm, " ").
+                        replace(/^\s+|\s+$/g, "").
+                        replace("&nbsp;", " ");
+
+                    normalizedText = strip(normalizedText);
+
                     wordCount = normalizedText.split(/\s+/).length;
                 }
             }
-            
+
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
 
             counterElement(editorInstance).innerHTML = html;
