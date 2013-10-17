@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['ca', 'de', 'en', 'es', 'fr', 'jp', 'no', 'pl', 'pt-BR'],
+    lang: ['ca', 'de', 'en', 'es', 'fr', 'jp', 'no', 'pl', 'pt-BR', 'it'],
     init: function (editor) {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
             return;
