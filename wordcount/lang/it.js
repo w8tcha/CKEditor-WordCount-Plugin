@@ -6,7 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang('wordcount', 'it', {
     WordCount: 'Parole:',
     CharCount: 'Caratteri:',
-    CharCountWithHTML: 'Caratteri (HTML includo):',
+    CharCountWithHTML: 'Caratteri (HTML incluso):',
     limit: 'Limite:',
     title: 'Statistiche'
 });
