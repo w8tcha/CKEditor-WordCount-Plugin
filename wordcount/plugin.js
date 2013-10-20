@@ -9,7 +9,7 @@ CKEDITOR.plugins.add('wordcount', {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
             return;
         }
-
+        
         var defaultFormat = '<span class="cke_path_item">',
             intervalId,
             lastWordCount,
@@ -56,7 +56,7 @@ CKEDITOR.plugins.add('wordcount', {
         var format = defaultFormat;
 
         CKEDITOR.document.appendStyleSheet(this.path + 'css/wordcount.css');
-
+        
         function counterId(editorInstance) {
             return 'cke_wordcount_' + editorInstance.name;
         }
@@ -144,21 +144,22 @@ CKEDITOR.plugins.add('wordcount', {
             editorInstance.execCommand('undo');
 
             if (!notify) {
-                counterElement(editorInstance).className += " cke_wordcountLimitReached";
-				
-				editorInstance.fire('limitReached', {}, editor);
+                //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
+                
+               editorInstance.fire('limitReached', {}, editor);
             }
+            
             // lock editor
             editorInstance.config.Locked = 1;
-            //editorInstance.fire("change");
         }
 
         function limitRestored(editorInstance) {
+            
             limitRestoredNotified = true;
             limitReachedNotified = false;
             editorInstance.config.Locked = 0;
 			
-			counterElement(editorInstance).className = "cke_wordcount";
+            counterElement(editorInstance).className = "cke_wordcount";
         }
         
         editor.on('key', function (event) {
@@ -172,16 +173,12 @@ CKEDITOR.plugins.add('wordcount', {
             }
         }, editor, null, 100);
         editor.on('dataReady', function (event) {
-            var count = event.editor.getData().length;
-            if (count > config.wordLimit) {
-                limitReached(editor);
-            }
             updateCounter(event.editor);
         }, editor, null, 100);
-        editor.on('change', function (event) {
+        /*editor.on('change', function (event) {
 			
             updateCounter(event.editor);
-        }, editor, null, 100);
+        }, editor, null, 100);*/
 
         editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
