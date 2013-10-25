@@ -124,6 +124,9 @@ CKEDITOR.plugins.add('wordcount', {
             // Check for word limit
             if (config.showWordCount && wordCount > config.wordLimit) {
                 limitReached(editor, limitReachedNotified);
+            } else if (config.showWordCount && wordCount == config.wordLimit) {
+                // create snapshot to make sure only the content after the limit gets deleted
+                editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
                 limitRestored(editor);
             }
@@ -131,6 +134,9 @@ CKEDITOR.plugins.add('wordcount', {
             // Check for char limit
             if (config.showCharCount && charCount > config.charLimit) {
                 limitReached(editor, limitReachedNotified);
+            } else if (config.showCharCount && charCount == config.charLimit) {
+                // create snapshot to make sure only the content after the limit gets deleted
+                editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && charCount < config.charLimit) {
                 limitRestored(editor);
             }
@@ -145,7 +151,7 @@ CKEDITOR.plugins.add('wordcount', {
             editorInstance.execCommand('undo');
 
             if (!notify) {
-                //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
+               //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
                 
                editorInstance.fire('limitReached', {}, editor);
             }
