@@ -169,7 +169,7 @@ CKEDITOR.plugins.add('wordcount', {
             counterElement(editorInstance).className = "cke_wordcount";
         }
         
-        editor.on('key', function (event) {
+        editor.on('change', function (event) {
 
             updateCounter(event.editor);
         }, editor, null, 100);
