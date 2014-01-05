@@ -99,6 +99,15 @@ CKEDITOR.plugins.add('wordcount', {
                 }
 
                 if (config.showWordCount) {
+                    // strip body tags
+                    if (editor.config.fullPage) {
+                        var i = text.search(new RegExp("<body>", "i"));
+                        if (i != -1) {
+                            var j = text.search(new RegExp("</body>", "i"));
+                            text = text.substring(i + 6, j);
+                        }
+                    }
+
                     normalizedText = text.
                         replace(/(\r\n|\n|\r)/gm, " ").
                         replace(/^\s+|\s+$/g, "").
@@ -179,13 +188,10 @@ CKEDITOR.plugins.add('wordcount', {
                 event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
             }
         }, editor, null, 100);
+
         editor.on('dataReady', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-        /*editor.on('change', function (event) {
-			
-            updateCounter(event.editor);
-        }, editor, null, 100);*/
 
         editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
