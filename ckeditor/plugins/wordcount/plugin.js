@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['ca', 'de', 'en', 'es', 'fr', 'it', 'jp', 'no', 'pl', 'pt-BR'],
+    lang: ['ca', 'de', 'en', 'es', 'fr', 'it', 'jp', 'nl', 'no', 'pl', 'pt-BR', 'ru'],
     version : 1.08,
     init: function (editor) {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
@@ -87,6 +87,16 @@ CKEDITOR.plugins.add('wordcount', {
                     if (config.countHTML) {
                         charCount = text.length;
                     } else {
+						// strip body tags
+                        if (editor.config.fullPage) {
+                            var i = text.search(new RegExp("<body>", "i"));
+                            if (i != -1) {
+                                var j = text.search(new RegExp("</body>", "i"));
+                                text = text.substring(i + 6, j);
+                            }
+
+                        }
+
                         normalizedText = text.
                             replace(/(\r\n|\n|\r)/gm, "").
                             replace(/^\s+|\s+$/g, "").
@@ -124,6 +134,9 @@ CKEDITOR.plugins.add('wordcount', {
             // Check for word limit
             if (config.showWordCount && wordCount > config.wordLimit) {
                 limitReached(editor, limitReachedNotified);
+            } else if (config.showWordCount && wordCount == config.wordLimit) {
+                // create snapshot to make sure only the content after the limit gets deleted
+                editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
                 limitRestored(editor);
             }
@@ -131,6 +144,9 @@ CKEDITOR.plugins.add('wordcount', {
             // Check for char limit
             if (config.showCharCount && charCount > config.charLimit) {
                 limitReached(editor, limitReachedNotified);
+            } else if (config.showCharCount && charCount == config.charLimit) {
+                // create snapshot to make sure only the content after the limit gets deleted
+                editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && charCount < config.charLimit) {
                 limitRestored(editor);
             }
@@ -145,7 +161,7 @@ CKEDITOR.plugins.add('wordcount', {
             editorInstance.execCommand('undo');
 
             if (!notify) {
-                //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
+               //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
                 
                editorInstance.fire('limitReached', {}, editor);
             }
@@ -163,23 +179,20 @@ CKEDITOR.plugins.add('wordcount', {
             counterElement(editorInstance).className = "cke_wordcount";
         }
         
-        editor.on('key', function (event) {
+        editor.on('change', function (event) {
 
             updateCounter(event.editor);
         }, editor, null, 100);
-
-        editor.on('uiSpace', function (event) {
+		
+		editor.on('uiSpace', function (event) {
             if (event.data.space == 'bottom') {
                 event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
             }
         }, editor, null, 100);
+
         editor.on('dataReady', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-        /*editor.on('change', function (event) {
-			
-            updateCounter(event.editor);
-        }, editor, null, 100);*/
 
         editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
