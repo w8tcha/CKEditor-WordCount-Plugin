@@ -73,6 +73,7 @@ CKEDITOR.plugins.add('wordcount', {
             if (tmp.textContent == '' && typeof tmp.innerText == 'undefined') {
 				return '0';
             }
+
             return tmp.textContent || tmp.innerText;
         }
 
@@ -101,7 +102,8 @@ CKEDITOR.plugins.add('wordcount', {
                             replace(/(\r\n|\n|\r)/gm, "").
                             replace(/^\s+|\s+$/g, "").
                             replace("&nbsp;", "").
-                            replace(" ", "");
+                            replace(/\s/g, "");
+
                         normalizedText = strip(normalizedText);
 
                         charCount = normalizedText.length;
@@ -116,7 +118,15 @@ CKEDITOR.plugins.add('wordcount', {
 
                     normalizedText = strip(normalizedText);
 
-                    wordCount = normalizedText.split(/\s+/).length;
+                    var words = normalizedText.split(/\s+/);
+
+                    for (var wordIndex = words.length - 1; wordIndex >= 0; wordIndex--) {
+                        if (words[wordIndex].match(/^([\s\t\r\n]*)$/)) {
+                            words.splice(wordIndex, 1);
+                        }
+                    }
+
+                    wordCount = words.length;
                 }
             }
 
