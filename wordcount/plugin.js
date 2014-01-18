@@ -87,6 +87,16 @@ CKEDITOR.plugins.add('wordcount', {
                     if (config.countHTML) {
                         charCount = text.length;
                     } else {
+						// strip body tags
+                        if (editor.config.fullPage) {
+                            var i = text.search(new RegExp("<body>", "i"));
+                            if (i != -1) {
+                                var j = text.search(new RegExp("</body>", "i"));
+                                text = text.substring(i + 6, j);
+                            }
+
+                        }
+
                         normalizedText = text.
                             replace(/(\r\n|\n|\r)/gm, "").
                             replace(/^\s+|\s+$/g, "").
@@ -99,15 +109,6 @@ CKEDITOR.plugins.add('wordcount', {
                 }
 
                 if (config.showWordCount) {
-                    // strip body tags
-                    if (editor.config.fullPage) {
-                        var i = text.search(new RegExp("<body>", "i"));
-                        if (i != -1) {
-                            var j = text.search(new RegExp("</body>", "i"));
-                            text = text.substring(i + 6, j);
-                        }
-                    }
-
                     normalizedText = text.
                         replace(/(\r\n|\n|\r)/gm, " ").
                         replace(/^\s+|\s+$/g, "").
@@ -115,7 +116,16 @@ CKEDITOR.plugins.add('wordcount', {
 
                     normalizedText = strip(normalizedText);
 
-                    wordCount = normalizedText.split(/\s+/).length;
+                    var s = normalizedText;
+
+                    s = s.replace(/(^\s*)|(\s*$)/gi, "");//exclude  start and end white-space
+                    s = s.replace(/[ ]{2,}/gi, " ");//2 or more space to 1
+                    s = s.replace(/\n /, "\n"); // exclude newline with a start spacing
+                   // return s.split(' ').length;
+
+                    console.log('#' + normalizedText+ '#');
+
+                    wordCount = s.trim().split(' ').length; //normalizedText.split(/\s+/).length;
                 }
             }
 
@@ -182,8 +192,8 @@ CKEDITOR.plugins.add('wordcount', {
 
             updateCounter(event.editor);
         }, editor, null, 100);
-
-        editor.on('uiSpace', function (event) {
+		
+		editor.on('uiSpace', function (event) {
             if (event.data.space == 'bottom') {
                 event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
             }
