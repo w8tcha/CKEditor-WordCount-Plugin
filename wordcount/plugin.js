@@ -104,7 +104,7 @@ CKEDITOR.plugins.add('wordcount', {
                             replace("&nbsp;", "").
                             replace(/\s/g, "");
 
-                        normalizedText = strip(normalizedText);
+                        normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
 
                         charCount = normalizedText.length;
                     }
@@ -188,6 +188,12 @@ CKEDITOR.plugins.add('wordcount', {
 			
             counterElement(editorInstance).className = "cke_wordcount";
         }
+
+        editor.on('key', function (event) {
+            if (editor.mode === 'source') {
+                updateCounter(event.editor);
+            }
+        }, editor, null, 100);
         
         editor.on('change', function (event) {
 
