@@ -132,6 +132,9 @@ CKEDITOR.plugins.add('wordcount', {
 
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
 
+            editor.plugins.wordcount.wordCount = wordCount;
+            editor.plugins.wordcount.charCount = charCount;
+
             counterElement(editorInstance).innerHTML = html;
 
             if (charCount == lastCharCount) {
