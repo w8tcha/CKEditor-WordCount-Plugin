@@ -4,8 +4,8 @@
  */
 
 CKEDITOR.plugins.add('wordcount', {
-    lang: ['ca', 'de', 'en', 'es', 'fr', 'it', 'jp', 'nl', 'no', 'pl', 'pt-BR', 'ru'],
-    version : 1.09,
+    lang: 'ca,de,en,es,fr,it,jp,nl,no,pl,pt-BR,ru', // %REMOVE_LINE_CORE%
+    version : 1.10,
     init: function (editor) {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
             return;
@@ -22,8 +22,8 @@ CKEDITOR.plugins.add('wordcount', {
         var defaultConfig = {
             showWordCount: true,
             showCharCount: false,
-            charLimit: 'unlimited',
-            wordLimit: 'unlimited',
+            //charLimit: 'unlimited',
+            //wordLimit: 'unlimited',
             countHTML: false
         };
 
@@ -35,9 +35,9 @@ CKEDITOR.plugins.add('wordcount', {
 
             defaultFormat += charLabel + '&nbsp;%charCount%';
 
-            if (config.charLimit != 'unlimited') {
+            /*if (config.charLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.charLimit + ')';
-            }
+            }*/
         }
 
         if (config.showCharCount && config.showWordCount) {
@@ -47,9 +47,9 @@ CKEDITOR.plugins.add('wordcount', {
         if (config.showWordCount) {
             defaultFormat += editor.lang.wordcount.WordCount + ' %wordCount%';
 
-            if (config.wordLimit != 'unlimited') {
+            /*if (config.wordLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.wordLimit + ')';
-            }
+            }*/
         }
         
         defaultFormat += '</span>';
@@ -142,24 +142,24 @@ CKEDITOR.plugins.add('wordcount', {
             lastCharCount = charCount;
 
             // Check for word limit
-            if (config.showWordCount && wordCount > config.wordLimit) {
+            /*if (config.showWordCount && wordCount > config.wordLimit) {
                 limitReached(editor, limitReachedNotified);
             } else if (config.showWordCount && wordCount == config.wordLimit) {
                 // create snapshot to make sure only the content after the limit gets deleted
                 editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
                 limitRestored(editor);
-            }
+            }*/
 
             // Check for char limit
-            if (config.showCharCount && charCount > config.charLimit) {
+            /*if (config.showCharCount && charCount > config.charLimit) {
                 limitReached(editor, limitReachedNotified);
             } else if (config.showCharCount && charCount == config.charLimit) {
                 // create snapshot to make sure only the content after the limit gets deleted
                 editorInstance.fire('saveSnapshot');
             } else if (!limitRestoredNotified && charCount < config.charLimit) {
                 limitRestored(editor);
-            }
+            }*/
 
             return true;
         }
