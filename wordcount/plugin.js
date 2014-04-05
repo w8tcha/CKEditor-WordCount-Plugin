@@ -13,17 +13,18 @@ CKEDITOR.plugins.add('wordcount', {
         
         var defaultFormat = '<span class="cke_path_item">',
             intervalId,
-            lastWordCount,
-            lastCharCount = 0,
+            lastWordCount = -1,
+            lastCharCount = -1,
             limitReachedNotified = false,
-            limitRestoredNotified = false;
+            limitRestoredNotified = false,
+            snapShot = editor.getSnapshot();
 
         // Default Config
         var defaultConfig = {
             showWordCount: true,
             showCharCount: false,
-            //charLimit: 'unlimited',
-            //wordLimit: 'unlimited',
+            charLimit: 'unlimited',
+            wordLimit: 'unlimited',
             countHTML: false
         };
 
@@ -35,9 +36,9 @@ CKEDITOR.plugins.add('wordcount', {
 
             defaultFormat += charLabel + '&nbsp;%charCount%';
 
-            /*if (config.charLimit != 'unlimited') {
+            if (config.charLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.charLimit + ')';
-            }*/
+            }
         }
 
         if (config.showCharCount && config.showWordCount) {
@@ -47,9 +48,9 @@ CKEDITOR.plugins.add('wordcount', {
         if (config.showWordCount) {
             defaultFormat += editor.lang.wordcount.WordCount + ' %wordCount%';
 
-            /*if (config.wordLimit != 'unlimited') {
+            if (config.wordLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.wordLimit + ')';
-            }*/
+            }
         }
         
         defaultFormat += '</span>';
@@ -71,98 +72,111 @@ CKEDITOR.plugins.add('wordcount', {
             tmp.innerHTML = html;
 
             if (tmp.textContent == '' && typeof tmp.innerText == 'undefined') {
-				return '0';
+                return '0';
             }
 
             return tmp.textContent || tmp.innerText;
         }
 
+        function countCharacters(text){
+            if (config.countHTML) {
+                return( text.length );
+            } else {
+                // strip body tags
+                if (editor.config.fullPage) {
+                    var i = text.search(new RegExp("<body>", "i"));
+                    if (i != -1) {
+                        var j = text.search(new RegExp("</body>", "i"));
+                        text = text.substring(i + 6, j);
+                    }
+
+                }
+
+                var normalizedText = text.
+                    replace(/(\r\n|\n|\r)/gm, "").
+                    replace(/^\s+|\s+$/g, "").
+                    replace("&nbsp;", "").
+                    replace(/\s/g, "");
+
+                normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
+
+                return( normalizedText.length );
+            }
+        }
+
+        function countWords(text){
+            var normalizedText = text.
+                replace(/(\r\n|\n|\r)/gm, " ").
+                replace(/^\s+|\s+$/g, "").
+                replace("&nbsp;", " ");
+
+            normalizedText = strip(normalizedText);
+
+            var words = normalizedText.split(/\s+/);
+
+            for (var wordIndex = words.length - 1; wordIndex >= 0; wordIndex--) {
+                if (words[wordIndex].match(/^([\s\t\r\n]*)$/)) {
+                    words.splice(wordIndex, 1);
+                }
+            }
+
+            return( words.length );
+        }
+
         function updateCounter(editorInstance) {
             var wordCount = 0,
                 charCount = 0,
-                normalizedText,
+                deltaChar,
+                deltaWord,
                 text;
 
             if (text = editorInstance.getData()) {
                 if (config.showCharCount) {
-                    if (config.countHTML) {
-                        charCount = text.length;
-                    } else {
-						// strip body tags
-                        if (editor.config.fullPage) {
-                            var i = text.search(new RegExp("<body>", "i"));
-                            if (i != -1) {
-                                var j = text.search(new RegExp("</body>", "i"));
-                                text = text.substring(i + 6, j);
-                            }
-
-                        }
-
-                        normalizedText = text.
-                            replace(/(\r\n|\n|\r)/gm, "").
-                            replace(/^\s+|\s+$/g, "").
-                            replace("&nbsp;", "").
-                            replace(/\s/g, "");
-
-                        normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
-
-                        charCount = normalizedText.length;
-                    }
+                    charCount = countCharacters(text);
                 }
 
                 if (config.showWordCount) {
-                    normalizedText = text.
-                        replace(/(\r\n|\n|\r)/gm, " ").
-                        replace(/^\s+|\s+$/g, "").
-                        replace("&nbsp;", " ");
-
-                    normalizedText = strip(normalizedText);
-
-                    var words = normalizedText.split(/\s+/);
-
-                    for (var wordIndex = words.length - 1; wordIndex >= 0; wordIndex--) {
-                        if (words[wordIndex].match(/^([\s\t\r\n]*)$/)) {
-                            words.splice(wordIndex, 1);
-                        }
-                    }
-
-                    wordCount = words.length;
+                    wordCount = countWords(text);
                 }
             }
 
             var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
 
-            editor.plugins.wordcount.wordCount = wordCount;
-            editor.plugins.wordcount.charCount = charCount;
+            editorInstance.plugins.wordcount.wordCount = wordCount;
+            editorInstance.plugins.wordcount.charCount = charCount;
 
             counterElement(editorInstance).innerHTML = html;
 
-            if (charCount == lastCharCount) {
+            if (charCount == lastCharCount && wordCount == lastWordCount) {
                 return true;
             }
-            
+
+            //If the limit is already over, allow the deletion of characters/words. Otherwise,
+            //the user would have to delete at one go the number of offending characters
+            deltaWord = wordCount - lastWordCount;
+            deltaChar = charCount - lastCharCount;
+
             lastWordCount = wordCount;
             lastCharCount = charCount;
 
-            // Check for word limit
-            /*if (config.showWordCount && wordCount > config.wordLimit) {
-                limitReached(editor, limitReachedNotified);
-            } else if (config.showWordCount && wordCount == config.wordLimit) {
-                // create snapshot to make sure only the content after the limit gets deleted
-                editorInstance.fire('saveSnapshot');
-            } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
-                limitRestored(editor);
-            }*/
+            if(lastWordCount == -1){
+                lastWordCount = wordCount;
+            }
+            if(lastCharCount == -1){
+                lastCharCount = charCount;
+            }
 
-            // Check for char limit
-            /*if (config.showCharCount && charCount > config.charLimit) {
-                limitReached(editor, limitReachedNotified);
-            } else if (config.showCharCount && charCount == config.charLimit) {
-                // create snapshot to make sure only the content after the limit gets deleted
-                editorInstance.fire('saveSnapshot');
-            } else if (!limitRestoredNotified && charCount < config.charLimit) {
-                limitRestored(editor);
-            }*/
+            // Check for word limit and/or char limit
+            if ((config.wordLimit != "unlimited" && wordCount > config.wordLimit && deltaWord > 0) ||
+                (config.charLimit != "unlimited" && charCount > config.charLimit && deltaChar > 0)) {
+                limitReached(editorInstance, limitReachedNotified);
+            } else if (!limitRestoredNotified && 
+                        (config.wordLimit == "unlimited" || wordCount < config.wordLimit) &&
+                        (config.charLimit == "unlimited" || charCount < config.charLimit) ) {
+                limitRestored(editorInstance);
+            } else {
+                snapShot = editorInstance.getSnapshot();
+            }
 
             return true;
         }
@@ -171,7 +185,7 @@ CKEDITOR.plugins.add('wordcount', {
             limitReachedNotified = true;
             limitRestoredNotified = false;
 
-            editorInstance.execCommand('undo');
+            editorInstance.loadSnapshot(snapShot);
 
             if (!notify) {
                //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
@@ -188,7 +202,8 @@ CKEDITOR.plugins.add('wordcount', {
             limitRestoredNotified = true;
             limitReachedNotified = false;
             editorInstance.config.Locked = 0;
-			
+            snapShot = editor.getSnapshot();
+            
             counterElement(editorInstance).className = "cke_wordcount";
         }
 
@@ -202,8 +217,8 @@ CKEDITOR.plugins.add('wordcount', {
 
             updateCounter(event.editor);
         }, editor, null, 100);
-		
-		editor.on('uiSpace', function (event) {
+        
+        editor.on('uiSpace', function (event) {
             if (event.data.space == 'bottom') {
                 event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
             }
@@ -212,7 +227,6 @@ CKEDITOR.plugins.add('wordcount', {
         editor.on('dataReady', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-
         editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
