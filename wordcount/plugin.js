@@ -10,18 +10,19 @@ CKEDITOR.plugins.add('wordcount', {
         if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
             return;
         }
-        
+
         var defaultFormat = '<span class="cke_path_item">',
             intervalId,
             lastWordCount,
-            lastCharCount = 0,
+            lastCharCount = 0;/*,
             limitReachedNotified = false,
-            limitRestoredNotified = false;
+            limitRestoredNotified = false;*/
 
         // Default Config
         var defaultConfig = {
             showWordCount: true,
             showCharCount: false,
+            countSpacesAsChars: false,
             //charLimit: 'unlimited',
             //wordLimit: 'unlimited',
             countHTML: false
@@ -101,8 +102,12 @@ CKEDITOR.plugins.add('wordcount', {
                         normalizedText = text.
                             replace(/(\r\n|\n|\r)/gm, "").
                             replace(/^\s+|\s+$/g, "").
-                            replace("&nbsp;", "").
-                            replace(/\s/g, "");
+                            replace("&nbsp;", "");
+
+                        if (!config.countSpacesAsChars) {
+                            normalizedText = text.
+                                replace(/\s/g, "");
+                        }
 
                         normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
 
@@ -167,7 +172,7 @@ CKEDITOR.plugins.add('wordcount', {
             return true;
         }
 
-        function limitReached(editorInstance, notify) {
+        /*function limitReached(editorInstance, notify) {
             limitReachedNotified = true;
             limitRestoredNotified = false;
 
@@ -190,7 +195,7 @@ CKEDITOR.plugins.add('wordcount', {
             editorInstance.config.Locked = 0;
 			
             counterElement(editorInstance).className = "cke_wordcount";
-        }
+        }*/
 
         editor.on('key', function (event) {
             if (editor.mode === 'source') {
