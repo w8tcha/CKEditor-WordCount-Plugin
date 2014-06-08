@@ -72,7 +72,7 @@ CKEDITOR.plugins.add('wordcount', {
             tmp.innerHTML = html;
 
             if (tmp.textContent == '' && typeof tmp.innerText == 'undefined') {
-				return '0';
+				return '';
             }
 
             return tmp.textContent || tmp.innerText;
