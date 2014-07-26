@@ -11,7 +11,7 @@ CKEDITOR.plugins.add('wordcount', {
             return;
         }
 
-        var defaultFormat = '<span class="cke_path_item">',
+        var defaultFormat = '',
             intervalId,
             lastWordCount,
             lastCharCount = 0; /*,
@@ -34,7 +34,7 @@ CKEDITOR.plugins.add('wordcount', {
         if (config.showCharCount) {
             var charLabel = editor.lang.wordcount[config.countHTML ? 'CharCountWithHTML' : 'CharCount'];
 
-            defaultFormat += charLabel + '&nbsp;%charCount%';
+            defaultFormat += charLabel + ' %charCount%';
 
             /*if (config.charLimit != 'unlimited') {
                 defaultFormat += '&nbsp;(' + editor.lang.wordcount.limit + '&nbsp;' + config.charLimit + ')';
@@ -42,7 +42,7 @@ CKEDITOR.plugins.add('wordcount', {
         }
 
         if (config.showCharCount && config.showWordCount) {
-            defaultFormat += ',&nbsp;';
+            defaultFormat += ', ';
         }
 
         if (config.showWordCount) {
@@ -53,7 +53,7 @@ CKEDITOR.plugins.add('wordcount', {
             }*/
         }
 
-        defaultFormat += '</span>';
+        //defaultFormat += '</span>';
 
         var format = defaultFormat;
 
@@ -133,41 +133,43 @@ CKEDITOR.plugins.add('wordcount', {
 
                     wordCount = words.length;
                 }
+
+                var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
+
+                editorInstance.plugins.wordcount.wordCount = wordCount;
+                editorInstance.plugins.wordcount.charCount = charCount;
+
+                counterElement(editorInstance).innerText = html;
+
+                if (charCount == lastCharCount) {
+                    return true;
+                }
+
+                lastWordCount = wordCount;
+                lastCharCount = charCount;
+
+                // Check for word limit
+                /*if (config.showWordCount && wordCount > config.wordLimit) {
+                    limitReached(editor, limitReachedNotified);
+                } else if (config.showWordCount && wordCount == config.wordLimit) {
+                    // create snapshot to make sure only the content after the limit gets deleted
+                    editorInstance.fire('saveSnapshot');
+                } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
+                    limitRestored(editor);
+                }*/
+
+                // Check for char limit
+                /*if (config.showCharCount && charCount > config.charLimit) {
+                    limitReached(editor, limitReachedNotified);
+                } else if (config.showCharCount && charCount == config.charLimit) {
+                    // create snapshot to make sure only the content after the limit gets deleted
+                    editorInstance.fire('saveSnapshot');
+                } else if (!limitRestoredNotified && charCount < config.charLimit) {
+                    limitRestored(editor);
+                }*/
             }
 
-            var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount);
-
-            editor.plugins.wordcount.wordCount = wordCount;
-            editor.plugins.wordcount.charCount = charCount;
-
-            counterElement(editorInstance).innerHTML = html;
-
-            if (charCount == lastCharCount) {
-                return true;
-            }
-
-            lastWordCount = wordCount;
-            lastCharCount = charCount;
-
-            // Check for word limit
-            /*if (config.showWordCount && wordCount > config.wordLimit) {
-                limitReached(editor, limitReachedNotified);
-            } else if (config.showWordCount && wordCount == config.wordLimit) {
-                // create snapshot to make sure only the content after the limit gets deleted
-                editorInstance.fire('saveSnapshot');
-            } else if (!limitRestoredNotified && wordCount < config.wordLimit) {
-                limitRestored(editor);
-            }*/
-
-            // Check for char limit
-            /*if (config.showCharCount && charCount > config.charLimit) {
-                limitReached(editor, limitReachedNotified);
-            } else if (config.showCharCount && charCount == config.charLimit) {
-                // create snapshot to make sure only the content after the limit gets deleted
-                editorInstance.fire('saveSnapshot');
-            } else if (!limitRestoredNotified && charCount < config.charLimit) {
-                limitRestored(editor);
-            }*/
+            
 
             return true;
         }
@@ -210,7 +212,7 @@ CKEDITOR.plugins.add('wordcount', {
 
         editor.on('uiSpace', function(event) {
             if (event.data.space == 'bottom') {
-                event.data.html += '<div id="' + counterId(event.editor) + '" class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '>&nbsp;</div>';
+                event.data.html += '<div class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '><span id="' + counterId(event.editor) + '" class="cke_path_item">&nbsp;</span></div>';
             }
         }, editor, null, 100);
 
