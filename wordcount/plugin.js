@@ -139,7 +139,7 @@ CKEDITOR.plugins.add('wordcount', {
                 editorInstance.plugins.wordcount.wordCount = wordCount;
                 editorInstance.plugins.wordcount.charCount = charCount;
 
-                counterElement(editorInstance).innerText = html;
+                counterElement(editorInstance).innerHTML = html;
 
                 if (charCount == lastCharCount) {
                     return true;
@@ -169,7 +169,7 @@ CKEDITOR.plugins.add('wordcount', {
                 }*/
             }
 
-            
+
 
             return true;
         }
@@ -182,20 +182,20 @@ CKEDITOR.plugins.add('wordcount', {
 
             if (!notify) {
                //counterElement(editorInstance).className = "cke_wordcount cke_wordcountLimitReached";
-                
+
                editorInstance.fire('limitReached', {}, editor);
             }
-            
+
             // lock editor
             editorInstance.config.Locked = 1;
         }
 
         function limitRestored(editorInstance) {
-            
+
             limitRestoredNotified = true;
             limitReachedNotified = false;
             editorInstance.config.Locked = 0;
-			
+
             counterElement(editorInstance).className = "cke_wordcount";
         }*/
 
