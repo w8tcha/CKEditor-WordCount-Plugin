@@ -7,10 +7,6 @@ CKEDITOR.plugins.add('wordcount', {
     lang: 'ca,de,en,es,fr,it,jp,nl,no,pl,pt-br,ru,sv', // %REMOVE_LINE_CORE%
     version: 1.10,
     init: function(editor) {
-        if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
-            return;
-        }
-
         var defaultFormat = '',
             intervalId,
             lastWordCount,
@@ -211,9 +207,16 @@ CKEDITOR.plugins.add('wordcount', {
         }, editor, null, 100);
 
         editor.on('uiSpace', function(event) {
-            if (event.data.space == 'bottom') {
-                event.data.html += '<div class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '><span id="' + counterId(event.editor) + '" class="cke_path_item">&nbsp;</span></div>';
+            if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
+                if (event.data.space == 'top') {
+                    event.data.html += '<div class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '><span id="' + counterId(event.editor) + '" class="cke_path_item">&nbsp;</span></div>';
+                }
+            } else {
+                if (event.data.space == 'bottom') {
+                    event.data.html += '<div class="cke_wordcount" style=""' + ' title="' + editor.lang.wordcount.title + '"' + '><span id="' + counterId(event.editor) + '" class="cke_path_item">&nbsp;</span></div>';
+                }
             }
+
         }, editor, null, 100);
 
         editor.on('dataReady', function(event) {
