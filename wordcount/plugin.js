@@ -135,7 +135,11 @@ CKEDITOR.plugins.add('wordcount', {
                 editorInstance.plugins.wordcount.wordCount = wordCount;
                 editorInstance.plugins.wordcount.charCount = charCount;
 
-                counterElement(editorInstance).innerText = html;
+                if (CKEDITOR.env.gecko) {
+                    counterElement(editorInstance).innerHTML = html;
+                } else {
+                    counterElement(editorInstance).innerText = html;
+                }
 
                 if (charCount == lastCharCount) {
                     return true;
