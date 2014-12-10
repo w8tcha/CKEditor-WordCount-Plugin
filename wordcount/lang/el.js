@@ -6,6 +6,6 @@ CKEDITOR.plugins.setLang('wordcount', 'el', {
     WordCount: 'Λέξεις:',
     CharCount: 'Χαρακτήρες:',
     CharCountWithHTML: 'Χαρακτήρες (μαζί με HTML):',
-    limit: 'Όριο:',
+    Paragraphs: 'Paragraphs:',
     title: 'Στατιστικά'
 });
