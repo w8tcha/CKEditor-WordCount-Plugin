@@ -6,7 +6,7 @@
 CKEDITOR.plugins.add('wordcount', {
     lang: 'ca,de,el,en,es,fr,hr,it,jp,nl,no,pl,pt-br,ru,sv,tr', // %REMOVE_LINE_CORE%
     version: 1.11,
-    init: function(editor) {
+    init: function (editor) {
         var defaultFormat = '',
             intervalId,
             lastWordCount,
@@ -18,7 +18,23 @@ CKEDITOR.plugins.add('wordcount', {
             showWordCount: true,
             showCharCount: false,
             countSpacesAsChars: false,
-            countHTML: false
+            countHTML: false,
+
+            //MAXLENGTH Properties
+            maxParagraphs: -1,
+            maxWordCount: -1,
+            maxCharCount: -1,
+
+            //DisAllowed functions
+            paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
+            wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
+            charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
+
+            //Allowed Functions
+            paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
+            wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
+            charCountLessThanMaxLengthEvent: function (currentLength, maxLength) { }
+            
         };
 
         // Get Config & Lang
@@ -104,11 +120,21 @@ CKEDITOR.plugins.add('wordcount', {
                         normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
 
                         charCount = normalizedText.length;
+                        if (charCount > config.maxCharCount && config.maxCharCount > -1) {
+                            config.charCountGreaterThanMaxLengthEvent(charCount, config.maxCharCount);
+                        } else {
+                            config.charCountLessThanMaxLengthEvent(charCount, config.maxCharCount);
+                        }
                     }
                 }
 
                 if (config.showParagraphs) {
                     paragraphs = text.replace(/&nbsp;/g, " ").replace(/(<([^>]+)>)/ig, "").replace(/^\s*$[\n\r]{1,}/gm, "++").split("++").length;
+                    if (paragraphs > config.maxParagraphs && config.maxParagraphs > -1) {
+                        config.paragraphsCountGreaterThanMaxLengthEvent(paragraphs, config.maxParagraphs);
+                    } else {
+                        config.paragraphsCountLessThanMaxLengthEvent(paragraphs, config.maxParagraphs);
+                    }
                 }
 
                 if (config.showWordCount) {
@@ -128,6 +154,11 @@ CKEDITOR.plugins.add('wordcount', {
                     }
 
                     wordCount = words.length;
+                    if (wordCount > config.maxWordCount && config.maxWordCount > -1) {
+                        config.wordCountGreaterThanMaxLengthEvent(wordCount, config.maxWordCount);
+                    } else {
+                        config.wordCountLessThanMaxLengthEvent(wordCount, config.maxWordCount);
+                    }
                 }
 
                 var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount).replace('%paragraphs%', paragraphs);
@@ -153,18 +184,18 @@ CKEDITOR.plugins.add('wordcount', {
             return true;
         }
 
-        editor.on('key', function(event) {
+        editor.on('key', function (event) {
             if (editor.mode === 'source') {
                 updateCounter(event.editor);
             }
         }, editor, null, 100);
 
-        editor.on('change', function(event) {
+        editor.on('change', function (event) {
 
             updateCounter(event.editor);
         }, editor, null, 100);
 
-        editor.on('uiSpace', function(event) {
+        editor.on('uiSpace', function (event) {
             if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
                 if (event.data.space == 'top') {
                     event.data.html += '<div class="cke_wordcount" style=""' +
@@ -189,14 +220,14 @@ CKEDITOR.plugins.add('wordcount', {
 
         }, editor, null, 100);
 
-        editor.on('dataReady', function(event) {
+        editor.on('dataReady', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
 
-        editor.on('afterPaste', function(event) {
+        editor.on('afterPaste', function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-        editor.on('blur', function() {
+        editor.on('blur', function () {
             if (intervalId) {
                 window.clearInterval(intervalId);
             }

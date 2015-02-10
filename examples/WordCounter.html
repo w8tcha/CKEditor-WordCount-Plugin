@@ -8,8 +8,12 @@
     <script src="assets/ckeditor/config.js"></script>
     <script src="assets/ckeditor/styles.js"></script>
     <script>
-        $(document).ready(function() {
-            CKEDITOR.replace("ckeditor");
+        $(document).ready(function () {
+
+            CKEDITOR.replace("ckeditor", {
+                extraPlugins: 'wordcount',
+                wordcount: { showWordCount: true, showCharCount: true, countHTML: false }
+            });
         });
     </script>
 </head>
