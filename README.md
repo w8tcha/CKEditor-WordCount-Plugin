@@ -39,4 +39,43 @@ config.wordcount = {
     countHTML: false
 };
 ````
+In the CKEditor configuration file (config.js) add the following code for MaxLength Works:
+````js
+ var wordCountMaxlenthConfig = {
+                extraPlugins: 'wordcount',
+                wordcount: {
+                    showWordCount: true, showCharCount: true,
+                    maxParagraphs: 3,
+                    maxWordCount: 4,
+                    maxCharCount: 10,
+                    paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                             //Overflow Change Event
+                    },
+                    wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                          //Overflow Change Event
+                    },
+                    charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                           //Overflow Change Event
+                    },
+                    charCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                              //Default Change Event
+                    },
+                    paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                           //Default Change Event
+                    },
+                    wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                       //Default Change Event
+                    }
+                }
+````
+In the CKEditor configuration file (config.js) add the following code for Culture Works:
+````js
+ var wordCountMaxlenthConfig = {
+                extraPlugins: 'wordcount',
+                wordcount: {
+                lang:'tr' //ca,de,el,en,es,fr,hr,it,jp,nl,no,pl,pt-br,ru,sv
+                }
+}
+````
+
 
