@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WordCounter</title>
+    <link href="assets/sample/sample.css" rel="stylesheet" />
+    <script src="assets/jquery/jquery-2.1.3.min.js"></script>
+    <script src="assets/ckeditor/ckeditor.js"></script>
+    <script src="assets/ckeditor/config.js"></script>
+    <script src="assets/ckeditor/styles.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace("ckeditor", {
+                extraPlugins: 'wordcount',
+                wordcount: {
+                    showWordCount: true, showCharCount: true,
+                    maxParagraphs: 3,
+                    maxWordCount: 4,
+                    maxCharCount: 10,
+                    paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationparagraphs").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - paragraphs").show();
+                    },
+                    wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationword").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - word").show();
+                    },
+                    charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationchar").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - char").show();
+                    },
+                    charCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationchar").css("background-color", "white").css("color", "black").hide();
+                    },
+                    paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationparagraphs").css("background-color", "white").css("color", "black").hide();
+                    },
+                    wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                        $("#informationword").css("background-color", "white").css("color", "black").hide();
+                    }
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <textarea id="ckeditor"></textarea>
+    <div id="informationchar"></div>
+    <div id="informationword"></div>
+    <div id="informationparagraphs"></div>
+</body>
+</html>
