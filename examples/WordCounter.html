@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WordCounter</title>
+    <link href="assets/sample/sample.css" rel="stylesheet" />
+    <script src="assets/jquery/jquery-2.1.3.min.js"></script>
+    <script src="assets/ckeditor/ckeditor.js"></script>
+    <script src="assets/ckeditor/config.js"></script>
+    <script src="assets/ckeditor/styles.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            CKEDITOR.replace("ckeditor", {
+                extraPlugins: 'wordcount',
+                wordcount: { showWordCount: true, showCharCount: true, countHTML: false }
+            });
+        });
+    </script>
+</head>
+<body>
+    <textarea id="ckeditor"></textarea>
+</body>
+</html>
