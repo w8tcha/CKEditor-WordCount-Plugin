@@ -34,7 +34,7 @@ CKEDITOR.plugins.add('wordcount', {
             paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
             wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
             charCountLessThanMaxLengthEvent: function (currentLength, maxLength) { }
-            
+
         };
 
         // Get Config & Lang
@@ -42,6 +42,9 @@ CKEDITOR.plugins.add('wordcount', {
 
         if (config.showParagraphs) {
             defaultFormat += editor.lang.wordcount.Paragraphs + ' %paragraphs%';
+            if (config.maxParagraphs > -1) {
+                defaultFormat += " / %maxParagraphs%";
+            }
         }
 
         if (config.showParagraphs && (config.showWordCount || config.showCharCount)) {
@@ -50,6 +53,9 @@ CKEDITOR.plugins.add('wordcount', {
 
         if (config.showWordCount) {
             defaultFormat += editor.lang.wordcount.WordCount + ' %wordCount%';
+            if (config.maxWordCount > -1) {
+                defaultFormat += " / %maxWordCount%";
+            }
         }
 
         if (config.showCharCount && config.showWordCount) {
@@ -60,6 +66,9 @@ CKEDITOR.plugins.add('wordcount', {
             var charLabel = editor.lang.wordcount[config.countHTML ? 'CharCountWithHTML' : 'CharCount'];
 
             defaultFormat += charLabel + ' %charCount%';
+            if (config.maxCharCount > -1) {
+                defaultFormat += " / %maxCharCount%";
+            }
         }
 
         var format = defaultFormat;
@@ -156,12 +165,14 @@ CKEDITOR.plugins.add('wordcount', {
                     wordCount = words.length;
                     if (wordCount > config.maxWordCount && config.maxWordCount > -1) {
                         config.wordCountGreaterThanMaxLengthEvent(wordCount, config.maxWordCount);
+
                     } else {
                         config.wordCountLessThanMaxLengthEvent(wordCount, config.maxWordCount);
                     }
                 }
 
-                var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount).replace('%paragraphs%', paragraphs);
+                var html = format.replace('%wordCount%', wordCount).replace('%charCount%', charCount).replace('%paragraphs%', paragraphs)
+                .replace('%maxWordCount%', config.maxWordCount).replace('%maxCharCount%', config.maxCharCount).replace('%maxParagraphs%', config.maxParagraphs);
 
                 editorInstance.plugins.wordcount.wordCount = wordCount;
                 editorInstance.plugins.wordcount.charCount = charCount;
