@@ -12,6 +12,38 @@ CKEDITOR.plugins.add('wordcount', {
             lastWordCount,
             lastCharCount = 0;
 
+        var dispatchEvent = function(type, currentLength, maxLength){
+            if(typeof document.dispatchEvent == 'undefined') {
+                return;
+            }
+
+            type = 'ckeditor.wordcount.' + type;
+
+            var cEvent;
+            var eventInitDict = {
+                bubbles: false,
+                cancelable: true,
+                detail: {
+                    currentLength: currentLength,
+                    maxLength: maxLength
+                }
+            };
+
+            try {
+                cEvent = new CustomEvent(type, eventInitDict);
+            } catch(o_O) {
+                cEvent = document.createEvent('CustomEvent');
+                cEvent.initCustomEvent(
+                    type,
+                    eventInitDict.bubbles,
+                    eventInitDict.cancelable,
+                    eventInitDict.detail
+                );
+            }
+
+            document.dispatchEvent(cEvent);
+        };
+
         // Default Config
         var defaultConfig = {
             showParagraphs: true,
@@ -26,15 +58,26 @@ CKEDITOR.plugins.add('wordcount', {
             maxCharCount: -1,
 
             //DisAllowed functions
-            paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
-            wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
-            charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) { },
+            paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('paragraphsCountGreaterThanMaxLengthEvent', currentLength, maxLength);
+            },
+            wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('wordCountGreaterThanMaxLengthEvent', currentLength, maxLength);
+            },
+            charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('charCountGreaterThanMaxLengthEvent', currentLength, maxLength);
+            },
 
             //Allowed Functions
-            paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
-            wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) { },
-            charCountLessThanMaxLengthEvent: function (currentLength, maxLength) { }
-
+            paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('paragraphsCountLessThanMaxLengthEvent', currentLength, maxLength);
+            },
+            wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('wordCountLessThanMaxLengthEvent', currentLength, maxLength);
+            },
+            charCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+                dispatchEvent('charCountLessThanMaxLengthEvent', currentLength, maxLength);
+            }
         };
 
         // Get Config & Lang
