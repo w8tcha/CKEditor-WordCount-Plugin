@@ -147,17 +147,19 @@ CKEDITOR.plugins.add("wordcount", {
 
                 }
 
-                normalizedText = text.
-                    replace(/(\r\n|\n|\r)/gm, "").
-                    replace(/^\s+|\s+$/g, "").
-                    replace("&nbsp;", "");
+                normalizedText = text;
 
                 if (!config.countSpacesAsChars) {
                     normalizedText = text.
-                        replace(/\s/g, "");
+                        replace(/\s/g, "").
+                        replace(/&nbsp;/g, "");
                 }
 
-                normalizedText = strip(normalizedText).replace(/^([\s\t\r\n]*)$/, "");
+                normalizedText = normalizedText.
+                    replace(/(\r\n|\n|\r)/gm, "").
+                    replace(/&nbsp;/gi, " ");
+
+                normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
 
                 return(normalizedText.length);
             }
