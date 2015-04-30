@@ -42,7 +42,13 @@ config.wordcount = {
     countSpacesAsChars: false,
 
     // Whether or not to include Html chars in the Char Count
-    countHTML: false
+    countHTML: false,
+    
+    // Maximum allowed Word Count
+    maxWordCount: 4,
+
+    // Maximum allowed Char Count
+	maxCharCount: 10
 };
 ````
 

@@ -32,7 +32,28 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		</p>
 <pre class="samples">
 CKEDITOR.replace( '<em>textarea_id</em>', {
-	<strong>extraPlugins: 'wordcount'</strong>
+	<strong>extraPlugins: 'wordcount', 
+                maxWordCount: 4,
+	        maxCharCount: 10,
+                // optional events
+	        paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationparagraphs").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - paragraphs").show();
+	        },
+	        wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationword").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - word").show();
+	        },
+	        charCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationchar").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - char").show();
+	        },
+	        charCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationchar").css("background-color", "white").css("color", "black").hide();
+	        },
+	        paragraphsCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationparagraphs").css("background-color", "white").css("color", "black").hide();
+	        },
+	        wordCountLessThanMaxLengthEvent: function (currentLength, maxLength) {
+	                $("#informationword").css("background-color", "white").css("color", "black").hide();
+	        }</strong>
 } );
 </pre>
 	</div>
@@ -48,8 +69,8 @@ CKEDITOR.replace( '<em>textarea_id</em>', {
 	    CKEDITOR.replace('editor1', {
 	        extraPlugins: 'wordcount',
 	        wordcount: {
-	            showWordCount: true, showCharCount: true,
-	            maxParagraphs: 3,
+	            showWordCount: true, 
+                    showCharCount: true,
 	            maxWordCount: 4,
 	            maxCharCount: 10,
 	            paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
