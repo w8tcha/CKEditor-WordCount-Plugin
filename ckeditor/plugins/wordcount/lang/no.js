@@ -3,6 +3,6 @@ CKEDITOR.plugins.setLang('wordcount', 'no', {
     WordCount: 'Ord:',
     CharCount: 'Tegn:',
     CharCountWithHTML: 'Tegn (including HTML):',
-    limit: 'Grense:',
+    Paragraphs: 'Paragraphs:',
     title: 'Statistikk'
 });

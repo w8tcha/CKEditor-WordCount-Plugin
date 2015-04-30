@@ -5,6 +5,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang('wordcount', 'jp', {
     WordCount: '単語数:',
     CharCount: '文字数:',
-    limit: '上限:',
+    Paragraphs: 'Paragraphs:',
     title: 'ワードカウント'
 });

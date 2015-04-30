@@ -6,6 +6,6 @@ CKEDITOR.plugins.setLang('wordcount', 'es', {
     WordCount: 'Palabras:',
     CharCount: 'Caràcteres:',
     CharCountWithHTML: 'Caràcteres (con HTML):',
-    limit: 'Límite:',
+    Paragraphs: 'Paragraphs:',
     title: 'Estadísticas'
 });
