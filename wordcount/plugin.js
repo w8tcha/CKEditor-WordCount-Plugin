@@ -134,9 +134,9 @@ CKEDITOR.plugins.add("wordcount", {
             return tmp.textContent || tmp.innerText;
         }
 
-        function countCharacters(text) {
+        function countCharacters(text, editorInstance) {
             if (config.countHTML) {
-                return (text.length);
+                return (editorInstance.getSnapshot().length);
             } else {
                 var normalizedText;
 
@@ -225,7 +225,7 @@ CKEDITOR.plugins.add("wordcount", {
 
             if (text = editorInstance.getData()) {
                 if (config.showCharCount) {
-                    charCount = countCharacters(text);
+                    charCount = countCharacters(text, editorInstance);
                 }
 
                 if (config.showParagraphs) {
