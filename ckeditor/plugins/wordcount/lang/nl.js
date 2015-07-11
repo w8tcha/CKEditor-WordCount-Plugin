@@ -7,5 +7,7 @@ CKEDITOR.plugins.setLang('wordcount', 'nl', {
     CharCount: 'Tekens:',
     CharCountWithHTML: 'Tekens (inclusief HTML):',
     Paragraphs: 'Paragraphs:',
+    pasteWarning: 'Content can not be pasted because it is above the allowed limit',
+    Selected: 'Selected: ',
     title: 'Statistieken'
 });

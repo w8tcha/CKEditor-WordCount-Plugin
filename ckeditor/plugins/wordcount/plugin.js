@@ -5,8 +5,8 @@
 
 CKEDITOR.plugins.add("wordcount", {
     lang: "ca,de,el,en,es,fr,hr,it,jp,nl,no,pl,pt-br,ru,sv,tr", // %REMOVE_LINE_CORE%
-    version: 1.12,
-    requires: 'htmlwriter',
+    version: 1.13,
+    requires: 'htmlwriter,notification,undo',
     init: function (editor) {
         var defaultFormat = "",
             intervalId,
@@ -134,9 +134,9 @@ CKEDITOR.plugins.add("wordcount", {
             return tmp.textContent || tmp.innerText;
         }
 
-        function countCharacters(text) {
+        function countCharacters(text, editorInstance) {
             if (config.countHTML) {
-                return (text.length);
+                return (editorInstance.getSnapshot().length);
             } else {
                 var normalizedText;
 
@@ -205,7 +205,6 @@ CKEDITOR.plugins.add("wordcount", {
                 counterElement(editorInstance).className = "cke_path_item cke_wordcountLimitReached";
                 editorInstance.fire("limitReached", {}, editor);
             }
-
         }
 
         function limitRestored(editorInstance) {
@@ -225,7 +224,7 @@ CKEDITOR.plugins.add("wordcount", {
 
             if (text = editorInstance.getData()) {
                 if (config.showCharCount) {
-                    charCount = countCharacters(text);
+                    charCount = countCharacters(text, editorInstance);
                 }
 
                 if (config.showParagraphs) {
@@ -341,9 +340,41 @@ CKEDITOR.plugins.add("wordcount", {
             updateCounter(event.editor);
         }, editor, null, 100);
 
+        editor.on("paste", function(event) {
+            if (config.maxWordCount > 0 || config.maxCharCount > 0) {
+
+                // Check if pasted content is above the limits
+                var wordCount = 0,
+                    charCount = 0,
+                    text = event.editor.getData() + event.data.dataValue;
+
+
+                if (config.showCharCount) {
+                    charCount = countCharacters(text, event.editor);
+                }
+
+                if (config.showWordCount) {
+                    wordCount = countWords(text);
+                }
+
+                var notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
+
+                if (charCount > config.maxCharCount) {
+                    notification.show();
+                    event.cancel();
+                }
+
+                if (wordCount > config.maxWordCount) {
+                    notification.show();
+                    event.cancel();
+                }
+            }
+        }, editor, null, 100);
+
         editor.on("afterPaste", function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
+
         editor.on("blur", function () {
             if (intervalId) {
                 window.clearInterval(intervalId);
