@@ -271,9 +271,8 @@ CKEDITOR.plugins.add("wordcount", {
                 (config.maxCharCount > -1 && charCount > config.maxCharCount && deltaChar > 0)) {
 
                 limitReached(editorInstance, limitReachedNotified);
-            } else if (!limitRestoredNotified &&
-                        (config.maxWordCount == -1 || wordCount < config.maxWordCount) &&
-                        (config.maxCharCount == -1 || charCount < config.maxCharCount)) {
+            } else if ((config.maxWordCount == -1 || wordCount < config.maxWordCount) &&
+            (config.maxCharCount == -1 || charCount < config.maxCharCount)) {
 
                 limitRestored(editorInstance);
             } else {
