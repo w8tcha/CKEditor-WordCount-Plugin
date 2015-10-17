@@ -358,12 +358,12 @@ CKEDITOR.plugins.add("wordcount", {
 
                 var notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
 
-                if (config.maxCharCount > 0 && charCount > config.maxCharCount) {
+                if (config.maxCharCount > 0 && charCount > config.maxCharCount && config.hardLimit) {
                     notification.show();
                     event.cancel();
                 }
 
-                if (config.maxWordCount > 0 && wordCount > config.maxWordCount) {
+                if (config.maxWordCount > 0 && wordCount > config.maxWordCount && config.hardLimit) {
                     notification.show();
                     event.cancel();
                 }
