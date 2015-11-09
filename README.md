@@ -52,3 +52,5 @@ config.wordcount = {
 };
 ````
 
+####Reference
+[Word Counter](http://wordcounttools.com)
