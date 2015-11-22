@@ -45,10 +45,10 @@ config.wordcount = {
     // Whether or not to include Html chars in the Char Count, Default Value: false
     countHTML: false,
     
-    // Maximum allowed Word Count, Default Value: -1 (unlimited)
+    // Maximum allowed Word Count that can be entered in the editor, Default Value: -1 (unlimited)
     maxWordCount: -1,
 
-    // Maximum allowed Char Count, Default Value: -1 (unlimited)
+    // Maximum allowed Chararcater Count entered be in the editor, Default Value: -1 (unlimited)
     maxCharCount: -1
 };
 ````
