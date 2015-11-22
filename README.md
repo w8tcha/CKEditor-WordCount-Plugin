@@ -25,31 +25,31 @@ Licensed under the terms of the MIT License.
 ````js
 config.extraPlugins = 'wordcount,notification';
 ````
-
+ 4. You can add the following config. if you need other than the default settings
 
 ````js
 config.wordcount = {
 
-    // Whether or not you want to show the Paragraphs Count
+    // Whether or not you want to show the Paragraphs Count, Default Value: true
     showParagraphs: true,
 
-    // Whether or not you want to show the Word Count
+    // Whether or not you want to show the Word Count, Default Value: true
     showWordCount: true,
 
-    // Whether or not you want to show the Char Count
+    // Whether or not you want to show the Char Count, Default Value: false
     showCharCount: false,
 
-    // Whether or not you want to count Spaces as Chars
+    // Whether or not you want to count Spaces as Chars, Default Value: false
     countSpacesAsChars: false,
 
-    // Whether or not to include Html chars in the Char Count
+    // Whether or not to include Html chars in the Char Count, Default Value: false
     countHTML: false,
     
-    // Maximum allowed Word Count
-    maxWordCount: 4,
+    // Maximum allowed Word Count, Default Value: -1 (unlimited)
+    maxWordCount: -1,
 
-    // Maximum allowed Char Count
-	maxCharCount: 10
+    // Maximum allowed Char Count, Default Value: -1 (unlimited)
+    maxCharCount: -1
 };
 ````
 
