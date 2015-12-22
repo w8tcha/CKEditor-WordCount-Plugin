@@ -16,6 +16,7 @@ CKEDITOR.plugins.add("wordcount", {
             limitRestoredNotified = false,
             snapShot = editor.getSnapshot();
 
+
         var dispatchEvent = function (type, currentLength, maxLength) {
             if (typeof document.dispatchEvent == 'undefined') {
                 return;
@@ -60,6 +61,9 @@ CKEDITOR.plugins.add("wordcount", {
             //MAXLENGTH Properties
             maxWordCount: -1,
             maxCharCount: -1,
+
+            // Filter
+            filter: null,
 
             //DisAllowed functions
             wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
@@ -125,6 +129,10 @@ CKEDITOR.plugins.add("wordcount", {
 
         function strip(html) {
             var tmp = document.createElement("div");
+
+            // Add filter before strip
+            html = filter(html);
+
             tmp.innerHTML = html;
 
             if (tmp.textContent == "" && typeof tmp.innerText == "undefined") {
@@ -132,6 +140,22 @@ CKEDITOR.plugins.add("wordcount", {
             }
 
             return tmp.textContent || tmp.innerText;
+        }
+
+        /**
+         * Implement filter to add or remove before counting
+         * @param html
+         * @returns string
+         */
+        function filter(html) {
+            if(config.filter instanceof CKEDITOR.htmlParser.filter) {
+                var fragment = CKEDITOR.htmlParser.fragment.fromHtml(html),
+                    writer = new CKEDITOR.htmlParser.basicWriter();
+                config.filter.applyTo( fragment );
+                fragment.writeHtml( writer );
+                return writer.getHtml();
+            }
+            return html;
         }
 
         function countCharacters(text, editorInstance) {
