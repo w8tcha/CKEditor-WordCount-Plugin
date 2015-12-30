@@ -49,7 +49,18 @@ config.wordcount = {
     maxWordCount: -1,
 
     // Maximum allowed Chararcater Count entered be in the editor, Default Value: -1 (unlimited)
-    maxCharCount: -1
+    maxCharCount: -1,
+
+    // Add filter to add or remove element before counting (see CKEDITOR.htmlParser.filter), Default value : null (no filter)
+    filter: new CKEDITOR.htmlParser.filter({
+        elements: {
+            div: function( element ) {
+                if(element.attributes.class == 'mediaembed') {
+                    return false;
+                }
+            }
+        }
+    })
 };
 ````
 
