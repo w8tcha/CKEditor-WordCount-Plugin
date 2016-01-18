@@ -1,4 +1,4 @@
-CKEDITOR.plugins.setLang('wordcount', 'pt-pt', {
+CKEDITOR.plugins.setLang('wordcount', 'pt', {
     WordCount: 'Palavras:',
     CharCount: 'Carateres:',
     CharCountWithHTML: 'Carateres (incluindo HTML):',
