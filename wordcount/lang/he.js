@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.setLang('wordcount', 'he', {
     WordCount: 'מילים:',
     CharCount: 'תווים:',
-    CharCountWithHTML: 'תווים (כולל HTML: %charCountHTML%)',
+    CharCountWithHTML: 'תווים (כולל HTML):',
     Paragraphs: 'פסקאות:',
     pasteWarning: 'לא ניתן להדביק תוכן בשל עודף תווים',
     Selected: 'נבחר: ',
