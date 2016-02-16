@@ -160,7 +160,7 @@ CKEDITOR.plugins.add("wordcount", {
 
         function countCharacters(text, editorInstance) {
             if (config.countHTML) {
-                return (text.length);
+                return (filter(text).length);
             } else {
                 var normalizedText;
 
