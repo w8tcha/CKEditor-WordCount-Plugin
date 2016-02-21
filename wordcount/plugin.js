@@ -262,8 +262,8 @@ CKEDITOR.plugins.add("wordcount", {
 
             var html = format.replace("%wordCount%", wordCount).replace("%charCount%", charCount).replace("%paragraphs%", paragraphs);
 
-            editorInstance.plugins.wordcount.wordCount = wordCount;
-            editorInstance.plugins.wordcount.charCount = charCount;
+            (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).wordCount = wordCount;
+            (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).charCount = charCount;
 
             if (CKEDITOR.env.gecko) {
                 counterElement(editorInstance).innerHTML = html;
