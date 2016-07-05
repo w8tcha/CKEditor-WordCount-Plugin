@@ -7,6 +7,9 @@ CKEDITOR.plugins.add("wordcount", {
     lang: "ar,ca,da,de,el,en,es,eu,fa,fi,fr,he,hr,it,jp,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn", // %REMOVE_LINE_CORE%
     version: 1.15,
     requires: 'htmlwriter,notification,undo',
+    onLoad: function(editor) {
+        CKEDITOR.document.appendStyleSheet(this.path + "css/wordcount.css");
+    },
     init: function (editor) {
         var defaultFormat = "",
             intervalId,
@@ -115,11 +118,7 @@ CKEDITOR.plugins.add("wordcount", {
 
         var format = defaultFormat;
 
-        if (config.loadCss === undefined || config.loadCss) {
-          CKEDITOR.document.appendStyleSheet(this.path + "css/wordcount.css");
-        }
-
-        function counterId(editorInstance) {
+       function counterId(editorInstance) {
             return "cke_wordcount_" + editorInstance.name;
         }
 
