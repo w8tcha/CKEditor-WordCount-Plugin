@@ -17,7 +17,7 @@ CKEDITOR.plugins.add("wordcount", {
             lastCharCount = -1,
             limitReachedNotified = false,
             limitRestoredNotified = false,
-            snapShot = editor.getSnapshot()
+            snapShot = editor.getSnapshot(),
             notification = null;
 
 
