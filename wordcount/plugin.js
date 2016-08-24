@@ -17,7 +17,8 @@ CKEDITOR.plugins.add("wordcount", {
             lastCharCount = -1,
             limitReachedNotified = false,
             limitRestoredNotified = false,
-            snapShot = editor.getSnapshot();
+            snapShot = editor.getSnapshot(),
+            notification = null;
 
 
         var dispatchEvent = function (type, currentLength, maxLength) {
@@ -379,15 +380,23 @@ CKEDITOR.plugins.add("wordcount", {
                     wordCount = countWords(text);
                 }
 
-                var notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
+
+                // Instantiate the notification when needed and only have one instance
+                if(notification === null) {
+                    notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
+                }
 
                 if (config.maxCharCount > 0 && charCount > config.maxCharCount && config.hardLimit) {
-                    notification.show();
+                    if(!notification.isVisible()) {
+                        notification.show();
+                    }
                     event.cancel();
                 }
 
                 if (config.maxWordCount > 0 && wordCount > config.maxWordCount && config.hardLimit) {
-                    notification.show();
+                    if(!notification.isVisible()) {
+                        notification.show();
+                    }
                     event.cancel();
                 }
             }
