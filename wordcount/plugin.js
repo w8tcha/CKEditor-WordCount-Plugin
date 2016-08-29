@@ -70,6 +70,9 @@ CKEDITOR.plugins.add("wordcount", {
             // Filter
             filter: null,
 
+            // How long to show the 'paste' warning
+            pasteWarningDuration: 0,
+
             //DisAllowed functions
             wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
                 dispatchEvent('wordCountGreaterThanMaxLengthEvent', currentLength, maxLength);
@@ -391,7 +394,11 @@ CKEDITOR.plugins.add("wordcount", {
 
                 // Instantiate the notification when needed and only have one instance
                 if(notification === null) {
-                    notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
+                    notification = new CKEDITOR.plugins.notification(event.editor, {
+                        message: event.editor.lang.wordcount.pasteWarning,
+                        type: 'warning', 
+                        duration: config.pasteWarningDuration 
+                    });
                 }
 
                 if (config.maxCharCount > 0 && charCount > config.maxCharCount && config.hardLimit) {
