@@ -71,6 +71,10 @@ config.wordcount = {
     // Maximum allowed Char Count, -1 is default for unlimited
     maxCharCount: -1,
 
+    // How long to show the 'paste' warning, 0 is default for not auto-closing the notification
+    pasteWarningDuration: 0,
+    
+
     // Add filter to add or remove element before counting (see CKEDITOR.htmlParser.filter), Default value : null (no filter)
     filter: new CKEDITOR.htmlParser.filter({
         elements: {
