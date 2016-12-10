@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.plugins.add("wordcount", {
-    lang: "ar,ca,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,jp,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn", // %REMOVE_LINE_CORE%
+    lang: "ar,ca,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn", // %REMOVE_LINE_CORE%
     version: 1.15,
     requires: 'htmlwriter,notification,undo',
     bbcodePluginLoaded: false,
@@ -396,8 +396,8 @@ CKEDITOR.plugins.add("wordcount", {
                 if(notification === null) {
                     notification = new CKEDITOR.plugins.notification(event.editor, {
                         message: event.editor.lang.wordcount.pasteWarning,
-                        type: 'warning', 
-                        duration: config.pasteWarningDuration 
+                        type: 'warning',
+                        duration: config.pasteWarningDuration
                     });
                 }
 
