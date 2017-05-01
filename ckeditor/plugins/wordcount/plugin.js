@@ -4,9 +4,13 @@
  */
 
 CKEDITOR.plugins.add("wordcount", {
-    lang: "ca,de,el,en,es,fr,hr,it,jp,nl,no,pl,pt-br,ru,sv,tr", // %REMOVE_LINE_CORE%
-    version: 1.13,
+    lang: "ar,ca,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn", // %REMOVE_LINE_CORE%
+    version: 1.16,
     requires: 'htmlwriter,notification,undo',
+    bbcodePluginLoaded: false,
+    onLoad: function(editor) {
+        CKEDITOR.document.appendStyleSheet(this.path + "css/wordcount.css");
+    },
     init: function (editor) {
         var defaultFormat = "",
             intervalId,
@@ -14,7 +18,9 @@ CKEDITOR.plugins.add("wordcount", {
             lastCharCount = -1,
             limitReachedNotified = false,
             limitRestoredNotified = false,
-            snapShot = editor.getSnapshot();
+            snapShot = editor.getSnapshot(),
+            notification = null;
+
 
         var dispatchEvent = function (type, currentLength, maxLength) {
             if (typeof document.dispatchEvent == 'undefined') {
@@ -60,6 +66,12 @@ CKEDITOR.plugins.add("wordcount", {
             //MAXLENGTH Properties
             maxWordCount: -1,
             maxCharCount: -1,
+
+            // Filter
+            filter: null,
+
+            // How long to show the 'paste' warning
+            pasteWarningDuration: 0,
 
             //DisAllowed functions
             wordCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
@@ -111,11 +123,9 @@ CKEDITOR.plugins.add("wordcount", {
 
         var format = defaultFormat;
 
-        if (config.loadCss === undefined || config.loadCss) {
-          CKEDITOR.document.appendStyleSheet(this.path + "css/wordcount.css");
-        }
+        bbcodePluginLoaded = typeof editor.plugins.bbcode != 'undefined';
 
-        function counterId(editorInstance) {
+       function counterId(editorInstance) {
             return "cke_wordcount_" + editorInstance.name;
         }
 
@@ -124,7 +134,16 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         function strip(html) {
+            if (bbcodePluginLoaded) {
+                // stripping out BBCode tags [...][/...]
+                return html.replace(/\[.*?\]/gi, '');
+            }
+
             var tmp = document.createElement("div");
+
+            // Add filter before strip
+            html = filter(html);
+
             tmp.innerHTML = html;
 
             if (tmp.textContent == "" && typeof tmp.innerText == "undefined") {
@@ -134,9 +153,25 @@ CKEDITOR.plugins.add("wordcount", {
             return tmp.textContent || tmp.innerText;
         }
 
+        /**
+         * Implement filter to add or remove before counting
+         * @param html
+         * @returns string
+         */
+        function filter(html) {
+            if(config.filter instanceof CKEDITOR.htmlParser.filter) {
+                var fragment = CKEDITOR.htmlParser.fragment.fromHtml(html),
+                    writer = new CKEDITOR.htmlParser.basicWriter();
+                config.filter.applyTo( fragment );
+                fragment.writeHtml( writer );
+                return writer.getHtml();
+            }
+            return html;
+        }
+
         function countCharacters(text, editorInstance) {
             if (config.countHTML) {
-                return (editorInstance.getSnapshot().length);
+                return (filter(text).length);
             } else {
                 var normalizedText;
 
@@ -238,8 +273,8 @@ CKEDITOR.plugins.add("wordcount", {
 
             var html = format.replace("%wordCount%", wordCount).replace("%charCount%", charCount).replace("%paragraphs%", paragraphs);
 
-            editorInstance.plugins.wordcount.wordCount = wordCount;
-            editorInstance.plugins.wordcount.charCount = charCount;
+            (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).wordCount = wordCount;
+            (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).charCount = charCount;
 
             if (CKEDITOR.env.gecko) {
                 counterElement(editorInstance).innerHTML = html;
@@ -271,9 +306,8 @@ CKEDITOR.plugins.add("wordcount", {
                 (config.maxCharCount > -1 && charCount > config.maxCharCount && deltaChar > 0)) {
 
                 limitReached(editorInstance, limitReachedNotified);
-            } else if (!limitRestoredNotified &&
-                        (config.maxWordCount == -1 || wordCount < config.maxWordCount) &&
-                        (config.maxCharCount == -1 || charCount < config.maxCharCount)) {
+            } else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
+            (config.maxCharCount == -1 || charCount <= config.maxCharCount)) {
 
                 limitRestored(editorInstance);
             } else {
@@ -344,8 +378,8 @@ CKEDITOR.plugins.add("wordcount", {
             if (config.maxWordCount > 0 || config.maxCharCount > 0) {
 
                 // Check if pasted content is above the limits
-                var wordCount = 0,
-                    charCount = 0,
+                var wordCount = -1,
+                    charCount = -1,
                     text = event.editor.getData() + event.data.dataValue;
 
 
@@ -357,15 +391,27 @@ CKEDITOR.plugins.add("wordcount", {
                     wordCount = countWords(text);
                 }
 
-                var notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
 
-                if (charCount > config.maxCharCount) {
-                    notification.show();
+                // Instantiate the notification when needed and only have one instance
+                if(notification === null) {
+                    notification = new CKEDITOR.plugins.notification(event.editor, {
+                        message: event.editor.lang.wordcount.pasteWarning,
+                        type: 'warning',
+                        duration: config.pasteWarningDuration
+                    });
+                }
+
+                if (config.maxCharCount > 0 && charCount > config.maxCharCount && config.hardLimit) {
+                    if(!notification.isVisible()) {
+                        notification.show();
+                    }
                     event.cancel();
                 }
 
-                if (wordCount > config.maxWordCount) {
-                    notification.show();
+                if (config.maxWordCount > 0 && wordCount > config.maxWordCount && config.hardLimit) {
+                    if(!notification.isVisible()) {
+                        notification.show();
+                    }
                     event.cancel();
                 }
             }
