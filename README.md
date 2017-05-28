@@ -42,8 +42,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 There now should be text in the bottom right-hand corner of your CKEditor which counts the number of Paragraphs and number of Words in your CKEditor.
 
-![plugin example](http://www.trojanbot.com/uploads/ckeditor_paragraph_words.png)
-
 To modify the behavior of the Word Count & Char Count text at the bottom right-hand corner of your CKEditor, add the following text to your config.js file located at /web/server/root/ckeditor/config.js.
 
 ````js
