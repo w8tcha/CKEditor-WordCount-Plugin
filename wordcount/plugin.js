@@ -59,6 +59,7 @@ CKEDITOR.plugins.add("wordcount", {
             showParagraphs: true,
             showWordCount: true,
             showCharCount: false,
+            countBytesAsChars: false,
             countSpacesAsChars: false,
             countHTML: false,
             hardLimit: true,
@@ -188,19 +189,25 @@ CKEDITOR.plugins.add("wordcount", {
                 normalizedText = text;
 
                 if (!config.countSpacesAsChars) {
-                    normalizedText = text.
-                        replace(/\s/g, "").
-                        replace(/&nbsp;/g, "");
+                    normalizedText = text.replace(/\s/g, "").replace(/&nbsp;/g, "");
                 }
 
-                normalizedText = normalizedText.
-                    replace(/(\r\n|\n|\r)/gm, "").
-                    replace(/&nbsp;/gi, " ");
+                normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
 
                 normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
 
-                return(normalizedText.length);
+                return config.countBytesAsChars ? (countBytes(normalizedText)) : (normalizedText.length);
             }
+        }
+
+        function countBytes(text) {
+            var count = 0, stringLength = text.length, i;
+            text = String(text || "");
+            for (i = 0; i < stringLength; i++) {
+                var partCount = encodeURI(text[i]).split("%").length;
+                count += partCount == 1 ? 1 : partCount - 1;
+            }
+            return count;
         }
 
         function countParagraphs(text) {
