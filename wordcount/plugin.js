@@ -283,6 +283,9 @@ CKEDITOR.plugins.add("wordcount", {
             }
 
             if (charCount == lastCharCount && wordCount == lastWordCount) {
+                if (charCount == config.maxCharCount || wordCount == config.maxWordCount) {
+                    snapShot = editor.getSnapshot();
+                }
                 return true;
             }
 
