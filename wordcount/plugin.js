@@ -245,7 +245,7 @@ CKEDITOR.plugins.add("wordcount", {
 
             if (!notify) {
                 counterElement(editorInstance).className = "cke_path_item cke_wordcountLimitReached";
-                editorInstance.fire("limitReached", {}, editor);
+                editorInstance.fire("limitReached", {firedBy: "wordCount.limitReached"}, editor);
             }
         }
 
@@ -264,7 +264,17 @@ CKEDITOR.plugins.add("wordcount", {
                 charCount = 0,
                 text;
 
-            if (text = editorInstance.getData()) {
+            // BeforeGetData and getData events are fired when calling
+            // getData(). We can prevent this by passing true as an
+            // argument to getData(). This allows us to fire the events
+            // manually with additional event data: firedBy. This additional
+            // data helps differentiate calls to getData() made by
+            // wordCount plugin from calls made by other plugins/code.
+            editorInstance.fire("beforeGetData", {firedBy: "wordCount.updateCounter"}, editor);
+            text = editorInstance.getData(true);
+            editorInstance.fire("getData", {dataValue: text, firedBy: "wordCount.updateCounter"}, editor);
+
+            if (text)  {
                 if (config.showCharCount) {
                     charCount = countCharacters(text, editorInstance);
                 }
@@ -389,9 +399,19 @@ CKEDITOR.plugins.add("wordcount", {
 
                 // Check if pasted content is above the limits
                 var wordCount = -1,
-                    charCount = -1,
-                    text = event.editor.getData() + event.data.dataValue;
+                    charCount = -1;
 
+                // BeforeGetData and getData events are fired when calling
+                // getData(). We can prevent this by passing true as an
+                // argument to getData(). This allows us to fire the events
+                // manually with additional event data: firedBy. This additional
+                // data helps differentiate calls to getData() made by
+                // wordCount plugin from calls made by other plugins/code.
+                event.editor.fire("beforeGetData", {firedBy: "wordCount.onPaste"}, event.editor);
+                var text = event.editor.getData(true);
+                event.editor.fire("getData", {dataValue: text, firedBy: "wordCount.onPaste"}, event.editor);
+
+                text += event.data.dataValue;
 
                 if (config.showCharCount) {
                     charCount = countCharacters(text, event.editor);
