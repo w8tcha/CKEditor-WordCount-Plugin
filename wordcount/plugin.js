@@ -56,6 +56,7 @@ CKEDITOR.plugins.add("wordcount", {
 
         // Default Config
         var defaultConfig = {
+            showRemaining: false,
             showParagraphs: true,
             showWordCount: true,
             showCharCount: false,
@@ -104,9 +105,16 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         if (config.showWordCount) {
-            defaultFormat += editor.lang.wordcount.WordCount + " %wordCount%";
             if (config.maxWordCount > -1) {
-                defaultFormat += "/" + config.maxWordCount;
+                if (config.showRemaining) {
+                    defaultFormat += "%wordCount% " + editor.lang.wordcount.WordCountRemaining;
+                } else {
+                    defaultFormat += editor.lang.wordcount.WordCount + " %wordCount%";
+
+                    defaultFormat += "/" + config.maxWordCount;
+                }
+            } else {
+                defaultFormat += editor.lang.wordcount.WordCount + " %wordCount%";
             }
         }
 
@@ -115,11 +123,20 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         if (config.showCharCount) {
-            var charLabel = editor.lang.wordcount[config.countHTML ? "CharCountWithHTML" : "CharCount"];
-
-            defaultFormat += charLabel + " %charCount%";
             if (config.maxCharCount > -1) {
-                defaultFormat += "/" + config.maxCharCount;
+                if (config.showRemaining) {
+                    defaultFormat += "%charCount% " + editor.lang.wordcount[config.countHTML
+                        ? "CharCountWithHTMLRemaining"
+                        : "CharCountRemaining"];
+                } else {
+                    defaultFormat += editor.lang.wordcount[config.countHTML
+                        ? "CharCountWithHTML"
+                        : "CharCount"] + " %charCount%";
+
+                    defaultFormat += "/" + config.maxCharCount;
+                }
+            } else {
+                defaultFormat += editor.lang.wordcount[config.countHTML ? "CharCountWithHTML" : "CharCount"] + " %charCount%";
             }
         }
 
@@ -293,7 +310,24 @@ CKEDITOR.plugins.add("wordcount", {
                 }
             }
 
-            var html = format.replace("%wordCount%", wordCount).replace("%charCount%", charCount).replace("%paragraphs%", paragraphs);
+
+            var html = format.replace("%paragraphs%", paragraphs);
+
+            if (config.showRemaining) {
+                if (config.maxCharCount >= 0) {
+                    html = html.replace("%charCount%", config.maxCharCount - charCount);
+                } else {
+                    html = html.replace("%charCount%", charCount);
+                }
+
+                if (config.maxWordCount >= 0) {
+                    html = html.replace("%wordCount%", config.maxWordCount - wordCount);
+                } else {
+                    html = html.replace("%wordCount%", wordCount);
+                }
+            } else {
+                html = html.replace("%wordCount%", wordCount).replace("%charCount%", charCount);
+            }
 
             (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).wordCount = wordCount;
             (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).charCount = charCount;
