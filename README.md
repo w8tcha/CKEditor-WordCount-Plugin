@@ -62,6 +62,9 @@ config.wordcount = {
     // Whether or not to include Html chars in the Char Count
     countHTML: false,
     
+    // Whether or not to include Line Breaks in the Char Count
+    countLineBreaks: false,
+
     // Maximum allowed Word Count, -1 is default for unlimited
     maxWordCount: -1,
 

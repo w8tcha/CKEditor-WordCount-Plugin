@@ -5,7 +5,7 @@
 
 CKEDITOR.plugins.add("wordcount", {
     lang: "ar,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn", // %REMOVE_LINE_CORE%
-    version: 1.16,
+    version: 1.17,
     requires: 'htmlwriter,notification,undo',
     bbcodePluginLoaded: false,
     onLoad: function(editor) {
@@ -62,6 +62,7 @@ CKEDITOR.plugins.add("wordcount", {
             countBytesAsChars: false,
             countSpacesAsChars: false,
             countHTML: false,
+            countLineBreaks: false,
             hardLimit: true,
 
             //MAXLENGTH Properties
@@ -192,7 +193,11 @@ CKEDITOR.plugins.add("wordcount", {
                     normalizedText = text.replace(/\s/g, "").replace(/&nbsp;/g, "");
                 }
 
-                normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
+                if (config.countLineBreaks) {
+                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "");
+                } else {
+                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
+                }
 
                 normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
 
