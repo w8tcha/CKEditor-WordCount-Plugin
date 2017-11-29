@@ -281,6 +281,10 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         function updateCounter(editorInstance) {
+            if(counterElement(editorInstance)){
+                return;
+            }
+
             var paragraphs = 0,
                 wordCount = 0,
                 charCount = 0,
