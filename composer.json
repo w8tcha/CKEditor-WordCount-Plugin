@@ -1,10 +1,13 @@
 {
-	"name": "w8tcha/CKEditor-WordCount-Plugin",
+	"name": "w8tcha/ckeditor-wordcount-plugin",
 	"description": "WordCount Plugin for CKEditor Editor",
 	"type": "library",
 	"keywords": [ "ckeditor", "editor", "wysiwyg", "html", "richtext", "text", "javascript" ],
 	"homepage": "http://w8tcha.github.com/CKEditor-WordCount-Plugin/",
 	"license": [ "MIT" ],
+	"support": {
+		"issues": "https://github.com/w8tcha/CKEditor-WordCount-Plugin/issues"
+	},
 	"authors": [
 		{
 			"name":  "w8tcha",
