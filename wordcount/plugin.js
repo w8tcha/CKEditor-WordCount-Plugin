@@ -263,6 +263,12 @@ CKEDITOR.plugins.add("wordcount", {
                 editorInstance.loadSnapshot(snapShot);
                 // lock editor
                 editorInstance.config.Locked = 1;
+
+                // Place the cursor at the end of the content after reload
+                // with the loadSnapshot().
+                var range = editorInstance.createRange();
+                range.moveToElementEditEnd(range.root);
+                editorInstance.getSelection().selectRanges([range]);
             }
 
             if (!notify) {
