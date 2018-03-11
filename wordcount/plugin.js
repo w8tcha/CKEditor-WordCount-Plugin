@@ -5,7 +5,7 @@
 
 CKEDITOR.plugins.add("wordcount", {
     lang: "ar,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn,zh", // %REMOVE_LINE_CORE%
-    version: "1.17.2",
+    version: "1.17.3",
     requires: 'htmlwriter,notification,undo',
     bbcodePluginLoaded: false,
     onLoad: function(editor) {
@@ -376,6 +376,15 @@ CKEDITOR.plugins.add("wordcount", {
             } else {
                 snapShot = editorInstance.getSnapshot();
             }
+
+            // update instance
+            editorInstance.wordCount =
+            {
+                paragraphs : paragraphs,
+                wordCount : wordCount,
+                charCount : charCount
+            }
+
 
             // Fire Custom Events
             if (config.charCountGreaterThanMaxLengthEvent && config.charCountLessThanMaxLengthEvent) {
