@@ -13,12 +13,12 @@ CKEDITOR.plugins.add("wordcount", {
     },
     init: function (editor) {
         var defaultFormat = "",
-            intervalId,
             lastWordCount = -1,
             lastCharCount = -1,
             limitReachedNotified = false,
             limitRestoredNotified = false,
             snapShot = editor.getSnapshot(),
+            timeoutId = 0,
             notification = null;
 
 
@@ -188,38 +188,38 @@ CKEDITOR.plugins.add("wordcount", {
             return html;
         }
 
-        function countCharacters(text, editorInstance) {
+        function countCharacters(text) {
             if (config.countHTML) {
                 return (filter(text).length);
-            } else {
-                var normalizedText;
-
-                // strip body tags
-                if (editor.config.fullPage) {
-                    var i = text.search(new RegExp("<body>", "i"));
-                    if (i != -1) {
-                        var j = text.search(new RegExp("</body>", "i"));
-                        text = text.substring(i + 6, j);
-                    }
-
-                }
-
-                normalizedText = text;
-
-                if (!config.countSpacesAsChars) {
-                    normalizedText = text.replace(/\s/g, "").replace(/&nbsp;/g, "");
-                }
-
-                if (config.countLineBreaks) {
-                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "");
-                } else {
-                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
-                }
-
-                normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
-
-                return config.countBytesAsChars ? (countBytes(normalizedText)) : (normalizedText.length);
             }
+
+			var normalizedText;
+
+			// strip body tags
+			if (editor.config.fullPage) {
+				var i = text.search(new RegExp("<body>", "i"));
+				if (i != -1) {
+					var j = text.search(new RegExp("</body>", "i"));
+					text = text.substring(i + 6, j);
+				}
+
+			}
+
+			normalizedText = text;
+
+			if (!config.countSpacesAsChars) {
+				normalizedText = text.replace(/\s/g, "").replace(/&nbsp;/g, "");
+			}
+
+			if (config.countLineBreaks) {
+				normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "");
+			} else {
+				normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
+			}
+
+			normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
+
+			return config.countBytesAsChars ? (countBytes(normalizedText)) : (normalizedText.length);
         }
 
         function countBytes(text) {
@@ -302,7 +302,7 @@ CKEDITOR.plugins.add("wordcount", {
 
             if (text)  {
                 if (config.showCharCount) {
-                    charCount = countCharacters(text, editorInstance);
+                    charCount = countCharacters(text);
                 }
 
                 if (config.showParagraphs) {
@@ -383,7 +383,7 @@ CKEDITOR.plugins.add("wordcount", {
                 paragraphs : paragraphs,
                 wordCount : wordCount,
                 charCount : charCount
-            }
+            };
 
 
             // Fire Custom Events
@@ -409,12 +409,20 @@ CKEDITOR.plugins.add("wordcount", {
 
         editor.on("key", function (event) {
             if (editor.mode === "source") {
-                updateCounter(event.editor);
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(
+                    updateCounter.bind(this, event.editor),
+                    250
+                );
             }
         }, editor, null, 100);
 
         editor.on("change", function (event) {
-            updateCounter(event.editor);
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(
+				updateCounter.bind(this, event.editor),
+				250
+			);
         }, editor, null, 100);
 
         editor.on("uiSpace", function (event) {
@@ -466,7 +474,7 @@ CKEDITOR.plugins.add("wordcount", {
                 text += event.data.dataValue;
 
                 if (config.showCharCount) {
-                    charCount = countCharacters(text, event.editor);
+                    charCount = countCharacters(text);
                 }
 
                 if (config.showWordCount) {
@@ -502,11 +510,5 @@ CKEDITOR.plugins.add("wordcount", {
         editor.on("afterPaste", function (event) {
             updateCounter(event.editor);
         }, editor, null, 100);
-
-        editor.on("blur", function () {
-            if (intervalId) {
-                window.clearInterval(intervalId);
-            }
-        }, editor, null, 300);
     }
 });
