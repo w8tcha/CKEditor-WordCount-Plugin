@@ -1,7 +1,7 @@
 /*
 Korean translation by Maxime Houdais
 */
-CKEDITOR.plugins.setLang('wordcount', 'kr', {
+CKEDITOR.plugins.setLang('wordcount', 'ko', {
     WordCount: '단어:',
     WordCountRemaining: '남은 단어',
     CharCount: '글자:',
