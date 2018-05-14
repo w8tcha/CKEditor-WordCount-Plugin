@@ -6,7 +6,7 @@
 CKEDITOR.plugins.add("wordcount",
     {
         lang:
-            "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,kr,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn,zh", // %REMOVE_LINE_CORE%
+            "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,zh-cn,zh", // %REMOVE_LINE_CORE%
         version: "1.17.3",
         requires: 'htmlwriter,notification,undo',
         bbcodePluginLoaded: false,
