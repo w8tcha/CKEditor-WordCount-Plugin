@@ -71,6 +71,7 @@ CKEDITOR.plugins.add("wordcount",
                 //MAXLENGTH Properties
                 maxWordCount: -1,
                 maxCharCount: -1,
+                maxParagraphs: -1,
 
                 // Filter
                 filter: null,
@@ -370,7 +371,8 @@ CKEDITOR.plugins.add("wordcount",
 
                 // Check for word limit and/or char limit
                 if ((config.maxWordCount > -1 && wordCount > config.maxWordCount && deltaWord > 0) ||
-                    (config.maxCharCount > -1 && charCount > config.maxCharCount && deltaChar > 0)) {
+                    (config.maxCharCount > -1 && charCount > config.maxCharCount && deltaChar > 0) ||
+                    (config.maxParagraphs > -1 && paragraphs > config.maxParagraphs)) {
 
                     limitReached(editorInstance, limitReachedNotified);
                 } else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
