@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>CKEditor</title>
     <script src="https://cdn.ckeditor.com/4.9.2/full/ckeditor.js"></script>
-    <script src="wordcount/plugin.js"></script>
+    <script src="../plugin.js"></script>
 	</head>
 	<body>
 		<textarea name="editor1"></textarea>
@@ -23,7 +23,7 @@
       }
       CKEDITOR.plugins.addExternal( 'wordcount', 'wordcount/', 'plugin.js' );
     </script>
-    <script src="wordcount/lang/en.js"></script>
+    <script src="../lang/en.js"></script>
     <script>
       CKEDITOR.replace( 'editor1' , config);
     </script>
