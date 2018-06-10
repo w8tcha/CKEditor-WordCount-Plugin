@@ -17,6 +17,7 @@ CKEDITOR.plugins.add("wordcount",
             var defaultFormat = "",
                 lastWordCount = -1,
                 lastCharCount = -1,
+                lastParagraphs = -1,
                 limitReachedNotified = false,
                 limitRestoredNotified = false,
                 snapShot = editor.getSnapshot(),
@@ -100,7 +101,17 @@ CKEDITOR.plugins.add("wordcount",
             var config = CKEDITOR.tools.extend(defaultConfig, editor.config.wordcount || {}, true);
 
             if (config.showParagraphs) {
-                defaultFormat += editor.lang.wordcount.Paragraphs + " %paragraphs%";
+              if (config.maxParagraphs > -1) {
+                  if (config.showRemaining) {
+                      defaultFormat += "%paragraphsCount% " + editor.lang.wordcount.ParagraphsRemaining;
+                  } else {
+                      defaultFormat += editor.lang.wordcount.Paragraphs + " %paragraphsCount%";
+
+                      defaultFormat += "/" + config.maxParagraphs;
+                  }
+              } else {
+                  defaultFormat += editor.lang.wordcount.Paragraphs + " %paragraphsCount%";
+              }
             }
 
             if (config.showParagraphs && (config.showWordCount || config.showCharCount)) {
@@ -319,9 +330,7 @@ CKEDITOR.plugins.add("wordcount",
                     }
                 }
 
-
-                var html = format.replace("%paragraphs%", paragraphs);
-
+                var html = format;
                 if (config.showRemaining) {
                     if (config.maxCharCount >= 0) {
                         html = html.replace("%charCount%", config.maxCharCount - charCount);
@@ -334,8 +343,14 @@ CKEDITOR.plugins.add("wordcount",
                     } else {
                         html = html.replace("%wordCount%", wordCount);
                     }
+
+                    if (config.maxParagraphs >= 0) {
+                        html = html.replace("%paragraphsCount%", config.maxParagraphs - paragraphs);
+                    } else {
+                        html = html.replace("%paragraphsCount%", paragraphs);
+                    }
                 } else {
-                    html = html.replace("%wordCount%", wordCount).replace("%charCount%", charCount);
+                    html = html.replace("%wordCount%", wordCount).replace("%charCount%", charCount).replace("%paragraphsCount%", paragraphs);
                 }
 
                 (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).wordCount = wordCount;
@@ -347,8 +362,8 @@ CKEDITOR.plugins.add("wordcount",
                     counterElement(editorInstance).innerText = html;
                 }
 
-                if (charCount == lastCharCount && wordCount == lastWordCount) {
-                    if (charCount == config.maxCharCount || wordCount == config.maxWordCount) {
+                if (charCount == lastCharCount && wordCount == lastWordCount && paragraphs == lastParagraphs) {
+                    if (charCount == config.maxCharCount || wordCount == config.maxWordCount || paragraphs > config.maxParagraphs) {
                         snapShot = editor.getSnapshot();
                     }
                     return true;
@@ -358,9 +373,11 @@ CKEDITOR.plugins.add("wordcount",
                 //the user would have to delete at one go the number of offending characters
                 var deltaWord = wordCount - lastWordCount;
                 var deltaChar = charCount - lastCharCount;
+                var deltaParagraphs = paragraphs - lastParagraphs;
 
                 lastWordCount = wordCount;
                 lastCharCount = charCount;
+                lastParagraphs = paragraphs;
 
                 if (lastWordCount == -1) {
                     lastWordCount = wordCount;
@@ -368,11 +385,14 @@ CKEDITOR.plugins.add("wordcount",
                 if (lastCharCount == -1) {
                     lastCharCount = charCount;
                 }
+                if (lastParagraphs == -1) {
+                    lastParagraphs = paragraphs;
+                }
 
                 // Check for word limit and/or char limit
                 if ((config.maxWordCount > -1 && wordCount > config.maxWordCount && deltaWord > 0) ||
                     (config.maxCharCount > -1 && charCount > config.maxCharCount && deltaChar > 0) ||
-                    (config.maxParagraphs > -1 && paragraphs > config.maxParagraphs)) {
+                    (config.maxParagraphs > -1 && paragraphs > config.maxParagraphs && deltaParagraphs > 0)) {
 
                     limitReached(editorInstance, limitReachedNotified);
                 } else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
