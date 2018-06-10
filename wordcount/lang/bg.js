@@ -10,6 +10,7 @@ CKEDITOR.plugins.setLang('wordcount', 'bg', {
     CharCountWithHTML: 'Знаци (с HTML):',
     CharCountWithHTMLRemaining: 'Оставащи знаци (с HTML)',
     Paragraphs: 'Параграфи:',
+    ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'Съдържанието не може да бъде поставено, защото е над разрешения лимит',
     Selected: 'Избрани: ',
     title: 'Статистика'

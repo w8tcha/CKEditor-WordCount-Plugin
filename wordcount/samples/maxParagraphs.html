@@ -3,8 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>CKEditor</title>
-    <script src="https://cdn.ckeditor.com/4.9.2/full/ckeditor.js"></script>
-    <script src="../plugin.js"></script>
+    <script src="../../../ckeditor.js"></script>
 	</head>
 	<body>
 		<textarea name="editor1"></textarea>
@@ -12,20 +11,14 @@
       var config = {
         extraPlugins: 'wordcount',
         wordcount: {
-          // Whether or not you want to show the Word Count
-          showWordCount: true,
-
-          // Whether or not you want to show the Char Count
-          showCharCount: true,
-
           maxParagraphs: 5,
-
+          showParagraphs: true,
+          showWordCount: false,
           showRemaining: true
-        }
+        },
+        language: 'en'
       }
-      CKEDITOR.plugins.addExternal( 'wordcount', 'wordcount/', 'plugin.js' );
     </script>
-    <script src="../lang/en.js"></script>
     <script>
       CKEDITOR.replace( 'editor1' , config);
     </script>

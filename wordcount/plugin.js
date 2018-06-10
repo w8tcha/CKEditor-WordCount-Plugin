@@ -396,7 +396,8 @@ CKEDITOR.plugins.add("wordcount",
 
                     limitReached(editorInstance, limitReachedNotified);
                 } else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
-                    (config.maxCharCount == -1 || charCount <= config.maxCharCount)) {
+                    (config.maxCharCount == -1 || charCount <= config.maxCharCount) &&
+                    (config.maxParagraphs == -1 || paragraphs <= config.maxParagraphs)) {
 
                     limitRestored(editorInstance);
                 } else {
@@ -498,11 +499,12 @@ CKEDITOR.plugins.add("wordcount",
 
             editor.on("paste",
                 function(event) {
-                    if (config.maxWordCount > 0 || config.maxCharCount > 0) {
+                    if (config.maxWordCount > 0 || config.maxCharCount > 0 || config.maxParagraphs > 0) {
 
                         // Check if pasted content is above the limits
                         var wordCount = -1,
-                            charCount = -1;
+                            charCount = -1,
+                            paragraphs = -1;
 
                         // BeforeGetData and getData events are fired when calling
                         // getData(). We can prevent this by passing true as an
@@ -524,6 +526,10 @@ CKEDITOR.plugins.add("wordcount",
                             wordCount = countWords(text);
                         }
 
+                        if (config.showParagraphs) {
+                            paragraphs = countParagraphs(text);
+                        }
+
 
                         // Instantiate the notification when needed and only have one instance
                         if (notification === null) {
@@ -543,6 +549,13 @@ CKEDITOR.plugins.add("wordcount",
                         }
 
                         if (config.maxWordCount > 0 && wordCount > config.maxWordCount && config.hardLimit) {
+                            if (!notification.isVisible()) {
+                                notification.show();
+                            }
+                            event.cancel();
+                        }
+
+                        if (config.maxParagraphs > 0 && paragraphs > config.maxParagraphs && config.hardLimit) {
                             if (!notification.isVisible()) {
                                 notification.show();
                             }
