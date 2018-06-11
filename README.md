@@ -70,6 +70,9 @@ config.wordcount = {
 
     // Maximum allowed Char Count, -1 is default for unlimited
     maxCharCount: -1,
+    
+    // Maximum allowed Paragraphs Count, -1 is default for unlimited
+    maxParagraphs: -1,
 
     // How long to show the 'paste' warning, 0 is default for not auto-closing the notification
     pasteWarningDuration: 0,
