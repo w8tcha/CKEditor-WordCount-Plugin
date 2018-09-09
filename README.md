@@ -93,3 +93,12 @@ config.wordcount = {
 
 **Note:** If you plan to change some of the JavaScript, you probably will not want to use the CKBuilder, because this will place the JavaScript of the Word Count & Char Count plugin in the ckeditor.js file located at /web/server/root/ckeditor/ckeditor.js. The JavaScript for the Word Count & Char Count plugin in the ckeditor.js file is different than the JavaScript used when manually adding the Word Count & Char Count plugin.  When manually adding the Word Count & Char Count plugin, the JavaScript will be in the plugin.js file located at 
 
+If you want to query the current wordcount you can do it via 
+
+```javascript
+// get the word count
+CKEDITOR.instances.editor1.wordCount.wordCount 
+
+// get the char count
+CKEDITOR.instances.editor1.wordCount.charCount 
+```
