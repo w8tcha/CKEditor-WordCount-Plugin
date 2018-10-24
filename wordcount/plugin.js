@@ -228,7 +228,7 @@ CKEDITOR.plugins.add("wordcount",
                 }
 
                 if (config.countLineBreaks) {
-                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "");
+                    normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, " ");
                 } else {
                     normalizedText = normalizedText.replace(/(\r\n|\n|\r)/gm, "").replace(/&nbsp;/gi, " ");
                 }
