@@ -19,7 +19,6 @@ CKEDITOR.plugins.add("wordcount",
                 lastParagraphs = -1,
                 limitReachedNotified = false,
                 limitRestoredNotified = false,
-                snapShot = editor.getSnapshot(),
                 timeoutId = 0,
                 notification = null;
 
@@ -275,9 +274,7 @@ CKEDITOR.plugins.add("wordcount",
                 limitRestoredNotified = false;
 
                 if (config.hardLimit) {
-                    editorInstance.loadSnapshot(snapShot);
-                    // lock editor
-                    editorInstance.config.Locked = 1;
+                    editorInstance.execCommand('undo');
                 }
 
                 if (!notify) {
@@ -289,8 +286,7 @@ CKEDITOR.plugins.add("wordcount",
             function limitRestored(editorInstance) {
                 limitRestoredNotified = true;
                 limitReachedNotified = false;
-                editorInstance.config.Locked = 0;
-                snapShot = editor.getSnapshot();
+                editorInstance.fire('saveSnapshot');
 
                 counterElement(editorInstance).className = "cke_path_item";
             }
@@ -363,7 +359,7 @@ CKEDITOR.plugins.add("wordcount",
 
                 if (charCount == lastCharCount && wordCount == lastWordCount && paragraphs == lastParagraphs) {
                     if (charCount == config.maxCharCount || wordCount == config.maxWordCount || paragraphs > config.maxParagraphs) {
-                        snapShot = editor.getSnapshot();
+                        editorInstance.fire('saveSnapshot');
                     }
                     return true;
                 }
@@ -400,7 +396,7 @@ CKEDITOR.plugins.add("wordcount",
 
                     limitRestored(editorInstance);
                 } else {
-                    snapShot = editorInstance.getSnapshot();
+                    editorInstance.fire('saveSnapshot');
                 }
 
                 // update instance
@@ -433,6 +429,22 @@ CKEDITOR.plugins.add("wordcount",
                 return true;
             }
 
+            function isCloseToLimits() {
+                if (config.maxWordCount > -1 && config.maxWordCount - lastWordCount < 5) {
+                    return true;
+                }
+
+                if (config.maxCharCount > -1 && config.maxCharCount - lastCharCount < 20) {
+                    return true;
+                }
+
+                if (config.maxParagraphs > -1 && config.maxParagraphs - lastParagraphs < 1) {
+                    return true;
+                }
+
+                return false;
+            }
+
             editor.on("key",
                 function(event) {
                     if (editor.mode === "source") {
@@ -449,10 +461,11 @@ CKEDITOR.plugins.add("wordcount",
 
             editor.on("change",
                 function(event) {
+                    var ms = isCloseToLimits() ? 5 : 250;
                     clearTimeout(timeoutId);
                     timeoutId = setTimeout(
                         updateCounter.bind(this, event.editor),
-                        250
+                        ms
                     );
                 },
                 editor,
