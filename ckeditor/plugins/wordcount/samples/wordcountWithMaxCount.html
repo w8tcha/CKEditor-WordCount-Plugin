@@ -9,7 +9,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
         <title>WordCount &mdash; CKEditor Sample</title>
         <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script src="../../../ckeditor.js"></script>
-	<link href="../../../samples/sample.css" rel="stylesheet">
 	<meta name="ckeditor-sample-name" content="WordCount plugin">
 	<meta name="ckeditor-sample-group" content="Plugins">
     <meta name="ckeditor-sample-description" content="Counts the words an shows the word count in the footer of the editor.">
@@ -68,11 +67,21 @@ CKEDITOR.replace( '<em>textarea_id</em>', {
 
 	    CKEDITOR.replace('editor1', {
 	        extraPlugins: 'wordcount',
+embed_provider: '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}',
+filter: new CKEDITOR.htmlParser.filter({
+                elements: {
+                    span: function( element ) {
+                        if(element.attributes.class == 'marker') {
+                            return false;
+                        }
+                    }
+                }
+            }),
 	        wordcount: {
 	            showWordCount: true, 
                     showCharCount: true,
-	            maxWordCount: 4,
-	            maxCharCount: 10,
+	        //    maxWordCount: 4,
+	         //   maxCharCount: 10,
 	            paragraphsCountGreaterThanMaxLengthEvent: function (currentLength, maxLength) {
 	                $("#informationparagraphs").css("background-color", "crimson").css("color", "white").text(currentLength + "/" + maxLength + " - paragraphs").show();
 	            },
