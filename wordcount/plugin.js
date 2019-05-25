@@ -206,7 +206,7 @@ CKEDITOR.plugins.add("wordcount",
 
             function countCharacters(text) {
                 if (config.countHTML) {
-                    return (filter(text).length);
+                    return config.countBytesAsChars ? countBytes(filter(text)) : filter(text).length;
                 }
 
                 var normalizedText;
@@ -235,7 +235,7 @@ CKEDITOR.plugins.add("wordcount",
 
                 normalizedText = strip(normalizedText).replace(/^([\t\r\n]*)$/, "");
 
-                return config.countBytesAsChars ? (countBytes(normalizedText)) : (normalizedText.length);
+                return config.countBytesAsChars ? countBytes(normalizedText) : normalizedText.length;
             }
 
             function countBytes(text) {
