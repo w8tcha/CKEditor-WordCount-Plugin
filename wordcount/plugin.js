@@ -524,6 +524,10 @@ CKEDITOR.plugins.add("wordcount",
                             charCount = -1,
                             paragraphs = -1;
 
+                        var mySelection = event.editor.getSelection(),
+                            selectedText = mySelection.getNative().toString().trim();
+
+
                         // BeforeGetData and getData events are fired when calling
                         // getData(). We can prevent this by passing true as an
                         // argument to getData(). This allows us to fire the events
@@ -533,6 +537,15 @@ CKEDITOR.plugins.add("wordcount",
                         event.editor.fire("beforeGetData", { firedBy: "wordCount.onPaste" }, event.editor);
                         var text = event.editor.getData(true);
                         event.editor.fire("getData", { dataValue: text, firedBy: "wordCount.onPaste" }, event.editor);
+
+                        if (selectedText.length > 0) {
+                            var plaintext = event.editor.document.getBody().getText();
+
+                            if (plaintext.length === selectedText.length) {
+                                text = '';
+                            }
+                        }
+
 
                         text += event.data.dataValue;
 
