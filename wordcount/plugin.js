@@ -480,16 +480,17 @@ CKEDITOR.plugins.add("wordcount",
 
             editor.on("uiSpace",
                 function(event) {
-					var wordcountClass = "cke_wordcount";
-                    // The list of languages that are written Right-To-Left (RTL) and are supported by the editor;
-                    // loop through and if editor language is found then add the rtl class
-					var rtlLanguages = CKEDITOR.lang.rtl;
-					for (var [key, value] of Object.entries(rtlLanguages)) {
-						if (key === editor.langCode){
-							wordcountClass = wordcountClass+" cke_wordcount_rtl";
-							break;
-						}
-					}
+                    var wordcountClass = "cke_wordcount";
+                    // Loop through the list of languages that are written Right-To-Left (RTL) and 
+                    // are supported by the editor. If the current editor language matches an entry
+                    // add the cke_wordcount_rtl class
+                    var rtlLanguagesArr = Object.keys(CKEDITOR.lang.rtl);
+                    for (var i = 0;i < rtlLanguagesArr.length;i++) {
+                        if (rtlLanguagesArr[i] === editor.langCode){
+                            wordcountClass = wordcountClass+" cke_wordcount_rtl";
+                            break;
+                        }
+                    }
                     if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
                         if (event.data.space == "top") {
                             event.data.html += "<div class=\""+wordcountClass+"\" style=\"\"" +
