@@ -7,7 +7,7 @@ CKEDITOR.plugins.add("wordcount",
     {
         lang: "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro", // %REMOVE_LINE_CORE%
         version: "1.17.6",
-        requires: 'htmlwriter,notification,undo',
+        requires: "htmlwriter,notification,undo",
         bbcodePluginLoaded: false,
         onLoad: function() {
             CKEDITOR.document.appendStyleSheet(this.path + "css/wordcount.css");
@@ -24,11 +24,11 @@ CKEDITOR.plugins.add("wordcount",
 
 
             var dispatchEvent = function(type, currentLength, maxLength) {
-                if (typeof document.dispatchEvent == 'undefined') {
+                if (typeof document.dispatchEvent == "undefined") {
                     return;
                 }
 
-                type = 'ckeditor.wordcount.' + type;
+                type = "ckeditor.wordcount." + type;
 
                 var cEvent;
                 var eventInitDict = {
@@ -43,7 +43,7 @@ CKEDITOR.plugins.add("wordcount",
                 try {
                     cEvent = new CustomEvent(type, eventInitDict);
                 } catch (o_O) {
-                    cEvent = document.createEvent('CustomEvent');
+                    cEvent = document.createEvent("CustomEvent");
                     cEvent.initCustomEvent(
                         type,
                         eventInitDict.bubbles,
@@ -81,18 +81,18 @@ CKEDITOR.plugins.add("wordcount",
 
                 //DisAllowed functions
                 wordCountGreaterThanMaxLengthEvent: function(currentLength, maxLength) {
-                    dispatchEvent('wordCountGreaterThanMaxLengthEvent', currentLength, maxLength);
+                    dispatchEvent("wordCountGreaterThanMaxLengthEvent", currentLength, maxLength);
                 },
                 charCountGreaterThanMaxLengthEvent: function(currentLength, maxLength) {
-                    dispatchEvent('charCountGreaterThanMaxLengthEvent', currentLength, maxLength);
+                    dispatchEvent("charCountGreaterThanMaxLengthEvent", currentLength, maxLength);
                 },
 
                 //Allowed Functions
                 wordCountLessThanMaxLengthEvent: function(currentLength, maxLength) {
-                    dispatchEvent('wordCountLessThanMaxLengthEvent', currentLength, maxLength);
+                    dispatchEvent("wordCountLessThanMaxLengthEvent", currentLength, maxLength);
                 },
                 charCountLessThanMaxLengthEvent: function(currentLength, maxLength) {
-                    dispatchEvent('charCountLessThanMaxLengthEvent', currentLength, maxLength);
+                    dispatchEvent("charCountLessThanMaxLengthEvent", currentLength, maxLength);
                 }
             };
 
@@ -158,7 +158,7 @@ CKEDITOR.plugins.add("wordcount",
 
             var format = defaultFormat;
 
-            bbcodePluginLoaded = typeof editor.plugins.bbcode != 'undefined';
+            bbcodePluginLoaded = typeof editor.plugins.bbcode != "undefined";
 
             function counterId(editorInstance) {
                 return "cke_wordcount_" + editorInstance.name;
@@ -171,7 +171,7 @@ CKEDITOR.plugins.add("wordcount",
             function strip(html) {
                 if (bbcodePluginLoaded) {
                     // stripping out BBCode tags [...][/...]
-                    return html.replace(/\[.*?\]/gi, '');
+                    return html.replace(/\[.*?\]/gi, "");
                 }
 
                 var tmp = document.createElement("div");
@@ -276,7 +276,7 @@ CKEDITOR.plugins.add("wordcount",
 
                 if (!config.warnOnLimitOnly) {
                     if (config.hardLimit) {
-                        editorInstance.execCommand('undo');
+                        editorInstance.execCommand("undo");
                     }
                 }
 
@@ -291,7 +291,7 @@ CKEDITOR.plugins.add("wordcount",
                 limitReachedNotified = false;
 
                 if (!config.warnOnLimitOnly) {
-                    editorInstance.fire('saveSnapshot');
+                    editorInstance.fire("saveSnapshot");
                 }
 
                 counterElement(editorInstance).className = "cke_path_item";
@@ -365,7 +365,7 @@ CKEDITOR.plugins.add("wordcount",
 
                 if (charCount == lastCharCount && wordCount == lastWordCount && paragraphs == lastParagraphs) {
                     if (charCount == config.maxCharCount || wordCount == config.maxWordCount || paragraphs > config.maxParagraphs) {
-                        editorInstance.fire('saveSnapshot');
+                        editorInstance.fire("saveSnapshot");
                     }
                     return true;
                 }
@@ -402,7 +402,7 @@ CKEDITOR.plugins.add("wordcount",
 
                     limitRestored(editorInstance);
                 } else {
-                    editorInstance.fire('saveSnapshot');
+                    editorInstance.fire("saveSnapshot");
                 }
 
                 // update instance
@@ -479,21 +479,16 @@ CKEDITOR.plugins.add("wordcount",
                 100);
 
             editor.on("uiSpace",
-                function(event) {
+                function (event) {
                     var wordcountClass = "cke_wordcount";
-                    // Loop through the list of languages that are written Right-To-Left (RTL) and 
-                    // are supported by the editor. If the current editor language matches an entry
-                    // add the cke_wordcount_rtl class
-                    var rtlLanguagesArr = Object.keys(CKEDITOR.lang.rtl);
-                    for (var i = 0;i < rtlLanguagesArr.length;i++) {
-                        if (rtlLanguagesArr[i] === editor.langCode){
-                            wordcountClass = wordcountClass+" cke_wordcount_rtl";
-                            break;
-                        }
+
+                    if (editor.lang.dir == "rtl") {
+                        wordcountClass = wordcountClass + " cke_wordcount_rtl";
                     }
+
                     if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
                         if (event.data.space == "top") {
-                            event.data.html += "<div class=\""+wordcountClass+"\" style=\"\"" +
+                            event.data.html += "<div class=\"" + wordcountClass +"\" style=\"\"" +
                                 " title=\"" +
                                 editor.lang.wordcount.title +
                                 "\"" +
@@ -553,7 +548,7 @@ CKEDITOR.plugins.add("wordcount",
                             var plaintext = event.editor.document.getBody().getText();
 
                             if (plaintext.length === selectedText.length) {
-                                text = '';
+                                text = "";
                             }
                         }
 
@@ -578,7 +573,7 @@ CKEDITOR.plugins.add("wordcount",
                             notification = new CKEDITOR.plugins.notification(event.editor,
                                 {
                                     message: event.editor.lang.wordcount.pasteWarning,
-                                    type: 'warning',
+                                    type: "warning",
                                     duration: config.pasteWarningDuration
                                 });
                         }
