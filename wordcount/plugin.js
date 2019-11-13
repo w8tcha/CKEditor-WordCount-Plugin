@@ -73,6 +73,11 @@ CKEDITOR.plugins.add("wordcount",
                 maxCharCount: -1,
                 maxParagraphs: -1,
 
+                //MINLENGTH Properties
+                minWordCount: -1,
+                minCharCount: -1,
+                minParagraphs: -1,
+
                 // Filter
                 filter: null,
 
@@ -144,15 +149,37 @@ CKEDITOR.plugins.add("wordcount",
                                 : "CharCountRemaining"];
                     } else {
                         defaultFormat += editor.lang.wordcount[config.countHTML
-                                ? "CharCountWithHTML"
-                                : "CharCount"] +
-                            " %charCount%";
+                            ? "CharCountWithHTML"
+                            : "Max"]  + " " + config.maxCharCount +
+                            " | " + editor.lang.wordcount["Reached"] + "%charCount%";
+                    }
+                }
 
-                        defaultFormat += "/" + config.maxCharCount;
+                if (config.minCharCount && config.maxCharCount && config.minCharCount > -1 && config.maxCharCount > -1) {
+                    // Linebreak in FF
+                    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                        defaultFormat += '<br>';
+                    }
+                    else {
+                        defaultFormat += '\n';
                     }
                 } else {
                     defaultFormat += editor.lang.wordcount[config.countHTML ? "CharCountWithHTML" : "CharCount"] +
                         " %charCount%";
+                }
+
+                if (config.minCharCount > -1) {
+                    if (config.showRemaining) {
+                        defaultFormat += "%charCount% " +
+                            editor.lang.wordcount[config.countHTML
+                                ? "CharCountWithHTMLRemaining"
+                                : "CharCountRemaining"];
+                    } else {
+                        defaultFormat += editor.lang.wordcount[config.countHTML
+                            ? "CharCountWithHTML"
+                            : "Min"]  + " " + config.minCharCount +
+                            " | " + editor.lang.wordcount["Reached"] + "%charCount%";
+                    }
                 }
             }
 
@@ -297,6 +324,10 @@ CKEDITOR.plugins.add("wordcount",
                 counterElement(editorInstance).className = "cke_path_item";
             }
 
+            function minimumNotReached(editorInstance) {
+                counterElement(editorInstance).className = "cke_path_item cke_wordcountMinimumNotReached";
+            }
+
             function updateCounter(editorInstance) {
                 if (!counterElement(editorInstance)) {
                     return;
@@ -333,7 +364,7 @@ CKEDITOR.plugins.add("wordcount",
 
                 var html = format;
                 if (config.showRemaining) {
-                    if (config.maxCharCount >= 0) {
+                    if (config.maxCharCount >= 0 || config.minCharCount >= 0) {
                         html = html.replace("%charCount%", config.maxCharCount - charCount);
                     } else {
                         html = html.replace("%charCount%", charCount);
@@ -396,13 +427,20 @@ CKEDITOR.plugins.add("wordcount",
                     (config.maxParagraphs > -1 && paragraphs > config.maxParagraphs && deltaParagraphs > 0)) {
 
                     limitReached(editorInstance, limitReachedNotified);
-                } else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
-                    (config.maxCharCount == -1 || charCount <= config.maxCharCount) &&
-                    (config.maxParagraphs == -1 || paragraphs <= config.maxParagraphs)) {
-
-                    limitRestored(editorInstance);
                 } else {
-                    editorInstance.fire("saveSnapshot");
+                    if ((config.minWordCount > -1 && wordCount < config.minWordCount) ||
+                        (config.minCharCount > -1 && charCount < config.minCharCount) ||
+                        (config.minParagraphs > -1 && paragraphs < config.minParagraphs)) {
+                        minimumNotReached(editorInstance);
+                    }
+                    else if ((config.maxWordCount == -1 || wordCount <= config.maxWordCount) &&
+                        (config.maxCharCount == -1 || charCount <= config.maxCharCount) &&
+                        (config.maxParagraphs == -1 || paragraphs <= config.maxParagraphs)) {
+
+                        limitRestored(editorInstance);
+                    } else {
+                        editorInstance.fire('saveSnapshot');
+                    }
                 }
 
                 // update instance

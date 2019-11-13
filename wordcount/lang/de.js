@@ -8,7 +8,10 @@ CKEDITOR.plugins.setLang('wordcount', 'de', {
     CharCountWithHTML: 'Zeichen (inkl. HTML):',
     Paragraphs: 'Absätze:',
     ParagraphsRemaining: 'Paragraphs remaining',
-    pasteWarning: 'Content can not be pasted because it is above the allowed limit',
+    pasteWarning: 'Inhalt kann nicht eingefügt werden, da er die maximale Länge überschreitet',
     Selected: 'Selected: ',
-    title: 'Statistik'
+    title: 'Statistik',
+    Min: 'Minimale Anzahl an Zeichen: ',
+    Max: 'Maximale Anzahl an Zeichen: ',
+    Reached: 'Erreicht: '
 });
