@@ -611,5 +611,13 @@ CKEDITOR.plugins.add("wordcount",
                 editor,
                 null,
                 100);
+
+            editor.on("afterPasteFromWord",
+                function (event) {
+                    updateCounter(event.editor);
+                },
+                editor,
+                null,
+                100);
         }
     });
