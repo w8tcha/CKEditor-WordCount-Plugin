@@ -13,7 +13,7 @@ CKEDITOR.plugins.setLang('wordcount', 'en', {
     ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'Content cannot be pasted because it is above the allowed limit',
     Selected: 'Selected: ',
-    title: 'Statistics'
+    title: 'Statistics',
     Min: 'Minimum number of characters: ',
     Max: 'Maximum number of characters: ',
     Reached: 'Reached: '

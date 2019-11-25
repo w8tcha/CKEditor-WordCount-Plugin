@@ -365,24 +365,24 @@ CKEDITOR.plugins.add("wordcount",
                 var html = format;
                 if (config.showRemaining) {
                     if (config.maxCharCount >= 0 || config.minCharCount >= 0) {
-                        html = html.replace("%charCount%", config.maxCharCount - charCount);
+                        html = html.replace(/%charCount%/g, config.maxCharCount - charCount);
                     } else {
-                        html = html.replace("%charCount%", charCount);
+                        html = html.replace(/%charCount%/g, charCount);
                     }
 
                     if (config.maxWordCount >= 0) {
-                        html = html.replace("%wordCount%", config.maxWordCount - wordCount);
+                        html = html.replace(/%wordCount%/g, config.maxWordCount - wordCount);
                     } else {
-                        html = html.replace("%wordCount%", wordCount);
+                        html = html.replace(/%wordCount%/g, wordCount);
                     }
 
                     if (config.maxParagraphs >= 0) {
-                        html = html.replace("%paragraphsCount%", config.maxParagraphs - paragraphs);
+                        html = html.replace(/%paragraphsCount%/g, config.maxParagraphs - paragraphs);
                     } else {
-                        html = html.replace("%paragraphsCount%", paragraphs);
+                        html = html.replace(/%paragraphsCount%/g, paragraphs);
                     }
                 } else {
-                    html = html.replace("%wordCount%", wordCount).replace("%charCount%", charCount).replace("%paragraphsCount%", paragraphs);
+                    html = html.replace(/%wordCount%/g, wordCount).replace(/%charCount%/g, charCount).replace(/%paragraphsCount%/g, paragraphs);
                 }
 
                 (editorInstance.config.wordcount || (editorInstance.config.wordcount = {})).wordCount = wordCount;
