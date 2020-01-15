@@ -6,7 +6,7 @@
 CKEDITOR.plugins.add("wordcount",
     {
         lang: "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro", // %REMOVE_LINE_CORE%
-        version: "1.17.6",
+        version: "1.17.7",
         requires: "htmlwriter,notification,undo",
         bbcodePluginLoaded: false,
         onLoad: function() {
@@ -454,6 +454,14 @@ CKEDITOR.plugins.add("wordcount",
             editor.on("key",
                 function(event) {
                     if (editor.mode === "source") {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(
+                            updateCounter.bind(this, event.editor),
+                            250
+                        );
+                    }
+
+                    if (event.data.keyCode == 13) {
                         clearTimeout(timeoutId);
                         timeoutId = setTimeout(
                             updateCounter.bind(this, event.editor),
