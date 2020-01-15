@@ -5,7 +5,7 @@ CKEDITOR.plugins.setLang('wordcount', 'ko', {
     WordCount: '단어:',
     WordCountRemaining: '남은 단어',
     CharCount: '글자:',
-    CharCountRemaining: '남은 글자',
+    CharCountRemaining: '자 남음',
     CharCountWithHTML: '글자 와 HTML:',
     CharCountWithHTMLRemaining: '남은 글자 와 HTML',
     Paragraphs: '단락:',
