@@ -67,6 +67,7 @@ CKEDITOR.plugins.add("wordcount",
                 countLineBreaks: false,
                 hardLimit: true,
                 warnOnLimitOnly: false,
+                wordDelims: '',
 
                 //MAXLENGTH Properties
                 maxWordCount: -1,
@@ -259,10 +260,12 @@ CKEDITOR.plugins.add("wordcount",
 
                 normalizedText = strip(normalizedText);
 
-                var words = normalizedText.split(/\s+/);
-
+                var re = config.wordDelims ? new RegExp('[\\s'+config.wordDelims+']+') : /\s+/;
+                var words = normalizedText.split(re);
+                
+                re = config.wordDelims ? new RegExp('^([\\s\\t\\r\\n'+config.wordDelims+']*)$') : /^([\s\t\r\n]*)$/;
                 for (var wordIndex = words.length - 1; wordIndex >= 0; wordIndex--) {
-                    if (words[wordIndex].match(/^([\s\t\r\n]*)$/)) {
+                    if (!words[wordIndex] || words[wordIndex].match(re)) {
                         words.splice(wordIndex, 1);
                     }
                 }
