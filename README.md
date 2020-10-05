@@ -95,7 +95,7 @@ config.wordcount = {
 
 ---
 
-If you want to query the current wordcount you can do it via 
+If you want to query the current wordcount you can do it via, 
 
 ```javascript
 // get the word count
