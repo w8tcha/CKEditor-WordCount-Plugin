@@ -279,9 +279,10 @@ CKEDITOR.plugins.add("wordcount",
 
                 if (!config.warnOnLimitOnly) {
                     if (config.hardLimit) {
-                        if (editor.mode === "source" &&  editor.plugins.codemirror) {
+                        if (editor.mode === "source" && editor.plugins.codemirror) {
                             window["codemirror_" + editor.id].undo();
                         } else {
+                            editorInstance.execCommand("undo");
                             editorInstance.execCommand("undo");
                         }
                            
@@ -460,12 +461,14 @@ CKEDITOR.plugins.add("wordcount",
             }
 
             editor.on("key",
-                function(event) {
+                function (event) {
+                    var ms = isCloseToLimits() ? 5 : 250;
+
                     if (editor.mode === "source") {
                         clearTimeout(timeoutId);
                         timeoutId = setTimeout(
                             updateCounter.bind(this, event.editor),
-                            250
+                            ms
                         );
                     }
 
@@ -473,13 +476,11 @@ CKEDITOR.plugins.add("wordcount",
                         clearTimeout(timeoutId);
                         timeoutId = setTimeout(
                             updateCounter.bind(this, event.editor),
-                            250
+                            ms
                         );
                     }
                 },
-                editor,
-                null,
-                100);
+                editor);
 
             editor.on("change",
                 function(event) {
@@ -490,9 +491,7 @@ CKEDITOR.plugins.add("wordcount",
                         ms
                     );
                 },
-                editor,
-                null,
-                100);
+                editor);
 
             editor.on("uiSpace",
                 function (event) {
