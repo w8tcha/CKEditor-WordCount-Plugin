@@ -5,8 +5,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'it', {
     WordCount: 'Parole:',
+    WordCountRemaining: 'Words remaining',
     CharCount: 'Caratteri:',
+    CharCountRemaining: 'Characters remaining',
     CharCountWithHTML: 'Caratteri (HTML incluso):',
+    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
     Paragraphs: 'Paragrafi:',
     ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'Il contenuto non può essere incollato poiché supera il limite massimo di caratteri disponibili',

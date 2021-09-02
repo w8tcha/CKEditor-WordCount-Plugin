@@ -4,9 +4,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'sv', {
     WordCount: 'Ord:',
+    WordCountRemaining: 'Words remaining',
     CharCount: 'Tecken:',
     CharCountRemaining: 'tecken återstår',
     CharCountWithHTML: 'Tecken (inklusive HTML):',
+    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
     Paragraphs: 'Paragraf:',
     ParagraphsRemaining: 'Paragraphs remaining',
     pasteWarning: 'Innehåll kan inte klistras in eftersom det överskrider den tillåtna gränsen',
