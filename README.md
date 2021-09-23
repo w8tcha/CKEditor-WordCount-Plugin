@@ -7,7 +7,7 @@ WordCount Plugin for CKEditor v4 (or above) that counts the words/characters an 
 
 #### Demo
 
-http://w8tcha.github.com/CKEditor-WordCount-Plugin/
+http://w8tcha.github.io/CKEditor-WordCount-Plugin/
 
 DISCLAIMER: This is a forked Version, i can not find the original Author anymore if anyone knows the original Author please contact me and i can include the Author in the Copyright Notices. 
 
