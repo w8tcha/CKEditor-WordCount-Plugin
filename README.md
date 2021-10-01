@@ -47,7 +47,10 @@ To modify the behavior of the Word Count & Char Count text at the bottom right-h
 ````js
 config.wordcount = {
 
-    // Whether or not you want to show the Paragraphs Count
+    // Whether or not you Show Remaining Count (if Maximum Word/Char/Paragraphs Count is set)
+    showRemaining: false,
+	
+	// Whether or not you want to show the Paragraphs Count
     showParagraphs: true,
 
     // Whether or not you want to show the Word Count
@@ -55,6 +58,9 @@ config.wordcount = {
 
     // Whether or not you want to show the Char Count
     showCharCount: false,
+	
+	// Whether or not you want to Count Bytes as Characters (needed for Multibyte languages such as Korean and Chinese)
+	countBytesAsChars: false,
 
     // Whether or not you want to count Spaces as Chars
     countSpacesAsChars: false,
@@ -64,6 +70,12 @@ config.wordcount = {
     
     // Whether or not to include Line Breaks in the Char Count
     countLineBreaks: false,
+	
+	// Whether or not to prevent entering new Content when limit is reached.
+	hardLimit: true,
+	
+	// Whether or not to to Warn only When limit is reached. Otherwise content above the limit will be deleted on paste or entering
+    warnOnLimitOnly: false,
 
     // Maximum allowed Word Count, -1 is default for unlimited
     maxWordCount: -1,
