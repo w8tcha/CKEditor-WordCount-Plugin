@@ -5,13 +5,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'it', {
     WordCount: 'Parole:',
-    WordCountRemaining: 'Words remaining',
+    WordCountRemaining: 'Parole rimanenti',
     CharCount: 'Caratteri:',
-    CharCountRemaining: 'Characters remaining',
+    CharCountRemaining: 'Caratteri rimanenti',
     CharCountWithHTML: 'Caratteri (HTML incluso):',
-    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
+    CharCountWithHTMLRemaining: 'Caratteri (con HTML) rimanenti',
     Paragraphs: 'Paragrafi:',
-    ParagraphsRemaining: 'Paragraphs remaining',
+    ParagraphsRemaining: 'Paragrafi rimanenti',
     pasteWarning: 'Il contenuto non può essere incollato poiché supera il limite massimo di caratteri disponibili',
     Selected: 'Selezionato: ',
     title: 'Statistiche'
