@@ -546,7 +546,9 @@ CKEDITOR.plugins.add("wordcount",
                             paragraphs = -1;
 
                         var mySelection = event.editor.getSelection(),
-                            selectedText = mySelection.getNative().toString().trim();
+                            selectedText = mySelection.getNative() 
+                              ? mySelection.getNative().toString().trim()
+                              : '';
 
 
                         // BeforeGetData and getData events are fired when calling
