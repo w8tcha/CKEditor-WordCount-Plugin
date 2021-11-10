@@ -1,12 +1,12 @@
 CKEDITOR.plugins.setLang('wordcount', 'pt', {
     WordCount: 'Palavras:',
-    WordCountRemaining: 'Words remaining',
+    WordCountRemaining: 'Palavras remanescentes',
     CharCount: 'Caracteres:',
-    CharCountRemaining: 'Characters remaining',
+    CharCountRemaining: 'Caracteres remanescentes',
     CharCountWithHTML: 'Carateres (incluindo HTML):',
-    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
+    CharCountWithHTMLRemaining: 'Caracteres (com HTML) remanescentes',
     Paragraphs: 'Parágrafos:',
-    ParagraphsRemaining: 'Paragraphs remaining',
+    ParagraphsRemaining: 'Parágrafos remanescentes',
     pasteWarning: 'O conteúdo não pode ser colado porque ultrapassa o limite permitido',
     Selected: 'Selecionado: ',
     title: 'Estatísticas'

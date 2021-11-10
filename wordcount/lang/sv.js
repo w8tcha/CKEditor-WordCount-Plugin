@@ -4,13 +4,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'sv', {
     WordCount: 'Ord:',
-    WordCountRemaining: 'Words remaining',
+    WordCountRemaining: 'ord kvar',
     CharCount: 'Tecken:',
-    CharCountRemaining: 'tecken återstår',
+    CharCountRemaining: 'tecken kvar',
     CharCountWithHTML: 'Tecken (inklusive HTML):',
-    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
+    CharCountWithHTMLRemaining: 'tecken (med html) kvar',
     Paragraphs: 'Paragraf:',
-    ParagraphsRemaining: 'Paragraphs remaining',
+    ParagraphsRemaining: 'stycken kvar',
     pasteWarning: 'Innehåll kan inte klistras in eftersom det överskrider den tillåtna gränsen',
     Selected: 'Valt: ',
     title: 'Statistik'
