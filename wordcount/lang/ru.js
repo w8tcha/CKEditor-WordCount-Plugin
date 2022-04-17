@@ -4,13 +4,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang('wordcount', 'ru', {
     WordCount: 'Слов:',
-    WordCountRemaining: 'Words remaining',
+    WordCountRemaining: 'слов(-а) осталось',
     CharCount: 'Символов:',
-    CharCountRemaining: 'Characters remaining',
+    CharCountRemaining: 'символов(-а) осталось',
     CharCountWithHTML: ' (включая HTML-разметку):',
-    CharCountWithHTMLRemaining: 'Characters (with HTML) remaining',
+    CharCountWithHTMLRemaining: 'символов(-а) (включая HTML) осталось',
     Paragraphs: 'Параграфов:',
-    ParagraphsRemaining: 'Параграфов осталось',
+    ParagraphsRemaining: 'параграфов осталось',
     pasteWarning: 'Контент не может быть вставлен, т.к. привышает допустимый лимит',
     Selected: 'Выделено: ',
     title: 'Статистика'
