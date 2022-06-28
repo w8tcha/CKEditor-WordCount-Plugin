@@ -26,7 +26,7 @@ Licensed under the terms of the MIT License.
 5.	Add the following line of text to the config.js file, which is located at /web/server/root/ckeditor/.
 
 ```javascript
-config.extraPlugins = 'wordcount,notification'; 
+config.extraPlugins = 'wordcount'; 
 ```
 
 Below is an example of what your config.js file might look like after adding config.extraPlugins = 'wordcount,notification';
