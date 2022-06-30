@@ -255,8 +255,15 @@ CKEDITOR.plugins.add("wordcount",
             }
 
             function countWords(text) {
-                var normalizedText = text.replace(/(<([^>]+)>)/ig, " ").replace(/(\r\n|\n|\r)/gm, "").replace(/^\s+|\s+$/g, "")
-                    .replace("&nbsp;", " ");
+                
+                /**
+                 * we may end up with a couple of extra spaces in a row with all these replacements, but that's ok 
+                 * since we're going to split on one or more delimiters when we generate the words array
+                 **/
+                var normalizedText = text.replace(/(<([^>]+)>)/ig, " ")    //replace html tags, i think?
+                    .replace(/(\r\n|\n|\r)/gm, " ")                        //replace new lines(in many forms)
+                    .replace(/^\s+|\s+$/g, " ")                            //replace leading or trailing multiple spaces
+                    .replace("&nbsp;", " ");                               //replace html entities indicating a space
 
                 normalizedText = strip(normalizedText);
 
