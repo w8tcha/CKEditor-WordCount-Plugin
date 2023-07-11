@@ -6,7 +6,7 @@
 CKEDITOR.plugins.add("wordcount",
     {
         lang: "ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ka,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro", // %REMOVE_LINE_CORE%
-        version: "1.17.11",
+        version: "1.17.12",
         requires: "htmlwriter,notification,undo",
         bbcodePluginLoaded: false,
         onLoad: function() {
@@ -175,12 +175,8 @@ CKEDITOR.plugins.add("wordcount",
                     return html.replace(/\[.*?\]/gi, "");
                 }
 
-                var tmp = document.createElement("div");
-
                 // Add filter before strip
                 html = filter(html);
-
-                tmp.innerHTML = html;
 
                 // Parse filtered HTML, without applying it to any element in DOM
                 var tmp = new DOMParser().parseFromString(html, 'text/html');
