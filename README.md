@@ -2,7 +2,7 @@ CKEditor-WordCount-Plugin
 =========================
 
 [![npm version](https://badge.fury.io/js/ckeditor-wordcount-plugin.svg)](https://www.npmjs.com/package/ckeditor-wordcount-plugin)
-[![license](https://img.shields.io/hexpm/l/plug.svg)](#)
+![license](https://img.shields.io/github/license/w8tcha/CKEditor-WordCount-Plugin)
 
 WordCount Plugin for CKEditor v4 that counts the words/characters an shows the word count and/or char count in the footer of the editor.
 
