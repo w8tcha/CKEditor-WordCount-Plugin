@@ -6,7 +6,7 @@
 CKEDITOR.plugins.add('wordcount',
     {
         lang: 'ar,bg,ca,cs,da,de,el,en,es,eu,fa,fi,fr,he,hr,hu,it,ka,ko,ja,nl,no,pl,pt,pt-br,ru,sk,sv,tr,uk,zh-cn,zh,ro', // %REMOVE_LINE_CORE%
-        version: '1.17.12',
+        version: '1.17.13',
         requires: 'htmlwriter,notification,undo',
         bbcodePluginLoaded: false,
         onLoad: function() {
@@ -288,7 +288,6 @@ CKEDITOR.plugins.add('wordcount',
                         if (editor.mode === 'source' && editor.plugins.codemirror) {
                             window[`codemirror_${editor.id}`].undo();
                         } else {
-                            editorInstance.execCommand('undo');
                             editorInstance.execCommand('undo');
                         }
                            
