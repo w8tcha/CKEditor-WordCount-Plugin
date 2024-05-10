@@ -4,7 +4,7 @@ CKEditor-WordCount-Plugin
 [![npm version](https://badge.fury.io/js/ckeditor-wordcount-plugin.svg)](https://www.npmjs.com/package/ckeditor-wordcount-plugin)
 ![license](https://img.shields.io/github/license/w8tcha/CKEditor-WordCount-Plugin)
 
-WordCount Plugin for CKEditor v4 that counts the words/characters an shows the word count and/or char count in the footer of the editor.
+WordCount Plugin for CKEditor v4 that counts the words/characters and shows the word count and/or char count in the footer of the editor.
 
 ![Screenshot](http://www.watchersnet.de/Portals/0/screenshots/dnn/CKEditorWordCountPlugin.png)
 
@@ -12,7 +12,7 @@ WordCount Plugin for CKEditor v4 that counts the words/characters an shows the w
 
 http://w8tcha.github.io/CKEditor-WordCount-Plugin/
 
-DISCLAIMER: This is a forked Version, i can not find the original Author anymore if anyone knows the original Author please contact me and i can include the Author in the Copyright Notices. 
+DISCLAIMER: This is a forked Version, I can not find the original Author anymore if anyone knows the original Author please contact me and I can include the Author in the Copyright Notices. 
 
 #### License
 
@@ -20,12 +20,12 @@ Licensed under the terms of the MIT License.
 
 #### Installation
 
- If building a new editor using the CKBuilder from http://ckeditor.com/, there is no need to follow numbers steps below. If adding the Word Count & Char Count plugin to an already established CKEditor, follow the numbered steps below.
+If building a new editor using the CKBuilder from http://ckeditor.com/, there is no need to follow numbers steps below. If adding the Word Count & Char Count plugin to an already established CKEditor, follow the numbered steps below.
 
 1.	Download the Word Count &  Char Count plugin from http://ckeditor.com/addon/wordcount or https://github.com/w8tcha/CKEditor-WordCount-Plugin. This will download a folder named **wordcount_*version*.zip** or **CKEditor-WordCount-Plugin-master.zip** to your Downloads folder.
 2.	Download the Notification plugin from http://ckeditor.com/addon/notification. This will download a folder named **notification_*version*.zip** to your Downloads folder.
 3.	Extract the .zip folders for both the Word Count & Char Count and Notification plugin. After extraction, you should have a folder named **wordcount** and a folder named **notification**.
-4.	Move the wordcount folder to /web/server/root/ckeditor/plugins/.  Move the notification folder to /web/server/root/ckeditor/plugins/.
+4.	Move the wordcount folder to /web/server/root/ckeditor/plugins/. Move the notification folder to /web/server/root/ckeditor/plugins/.
 5.	Add the following line of text to the config.js file, which is located at /web/server/root/ckeditor/.
 
 ```javascript
