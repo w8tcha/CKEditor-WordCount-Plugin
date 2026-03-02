@@ -9,8 +9,8 @@ CKEDITOR.plugins.setLang('wordcount', 'lt', {
     CharCountRemaining: 'Liko simbolių',
     CharCountWithHTML: 'Simbolių (su HTML):',
     CharCountWithHTMLRemaining: 'Liko simbolių (su HTML)',
-    Paragraphs: 'Paragrafai:',
-    ParagraphsRemaining: 'Liko paragrafų',
+    Paragraphs: 'Pastraipos:',
+    ParagraphsRemaining: 'Liko pastraipų',
     pasteWarning: 'Turinys negali būti įklijuotas, nes viršija nustatytą limitą',
     Selected: 'Pasirinkta: ',
     title: 'Statistika'
