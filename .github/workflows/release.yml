@@ -69,10 +69,6 @@ jobs:
         if: steps.version.outputs.is_newer == 'true'
         run: npm ci
 
-      - name: Build
-        if: steps.version.outputs.is_newer == 'true'
-        run: npm run build
-
       - name: Create GitHub release
         if: steps.version.outputs.is_newer == 'true'
         env:
