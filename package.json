@@ -1,0 +1,20 @@
+{
+  "name": "ckeditor-wordcount-plugin-website",
+  "version": "1.0.0",
+  "description": "CKEditor WordCount Plugin Website",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/w8tcha/CKEditor-WordCount-Plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/w8tcha/CKEditor-WordCount-Plugin.git"
+  },
+  "dependencies": {
+    "ckeditor4": "^4.22.1"
+  },
+  "scripts": {
+    "update-deps": "set npm_config_allow_scripts=&& npm-check -y",
+    "update-ckeditor": "node scripts/update-ckeditor.js",
+    "update-plugin": "node scripts/update-plugin.js"
+  }
+}
